@@ -130,7 +130,7 @@ function FaqItem({ q, a }: { q: string; a: string }) {
             transition={{ duration: 0.28, ease: "easeOut" }}
             style={{ overflow: "hidden" }}
           >
-            <p style={{ fontFamily: "var(--font-work-sans), sans-serif", fontSize: 15, color: "rgba(255,255,255,0.6)", lineHeight: 1.7, paddingBottom: 20 }}>
+            <p style={{ fontFamily: "Inter, sans-serif", fontSize: 15, color: "#444", lineHeight: 1.7, padding: "0 24px 20px" }}>
               {a}
             </p>
           </motion.div>
@@ -214,26 +214,29 @@ export default function RevisiHidupPage() {
         {/* Bottom bar */}
         <div style={{
           position: "absolute", bottom: 0, left: 0, right: 0,
-          display: "flex", alignItems: "center", flexWrap: "wrap", padding: "0 clamp(16px, 4vw, 48px) clamp(20px, 3vw, 36px)", gap: 24, zIndex: 1,
+          display: "flex", alignItems: "center", padding: "0 clamp(16px, 4vw, 48px) clamp(20px, 3vw, 36px)", gap: 16, zIndex: 1,
         }}>
-          <span style={{ fontFamily: "Inter, sans-serif", fontWeight: 500, fontSize: 16, color: "rgba(255,255,255,0.75)", whiteSpace: "nowrap" }}>
+          <span style={{ fontFamily: "Inter, sans-serif", fontWeight: 500, fontSize: 15, color: "rgba(255,255,255,0.75)", whiteSpace: "nowrap" }}>
             9-12 April 2026
           </span>
           <div style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.35)" }} />
-          <span style={{ fontFamily: "Inter, sans-serif", fontWeight: 500, fontSize: 16, color: "rgba(255,255,255,0.75)", whiteSpace: "nowrap" }}>
+          <span style={{ fontFamily: "Inter, sans-serif", fontWeight: 500, fontSize: 15, color: "rgba(255,255,255,0.75)", whiteSpace: "nowrap" }}>
             Plaza 51, Bintaro
           </span>
-          <div style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.35)" }} />
+        </div>
+
+        {/* Centered scroll button */}
+        <div style={{ position: "absolute", bottom: "clamp(72px, 10vw, 100px)", left: 0, right: 0, display: "flex", justifyContent: "center", zIndex: 1 }}>
           <button
             onClick={scrollToNext}
             aria-label="Scroll to next section"
             style={{
-              width: 72, height: 72,
+              width: 56, height: 56,
               background: "rgba(255,255,255,0.18)",
               border: "none",
               borderRadius: "50%",
               display: "flex", alignItems: "center", justifyContent: "center",
-              cursor: "pointer", flexShrink: 0,
+              cursor: "pointer",
               position: "relative",
             }}
           >
@@ -241,23 +244,20 @@ export default function RevisiHidupPage() {
             <motion.div
               animate={{ rotate: 360 }}
               transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
-              style={{
-                position: "absolute", inset: -6,
-                borderRadius: "50%",
-              }}
+              style={{ position: "absolute", inset: -5, borderRadius: "50%" }}
             >
-              <svg width="84" height="84" viewBox="0 0 84 84" fill="none">
-                {Array.from({ length: 24 }).map((_, i) => {
-                  const angle = (i / 24) * 2 * Math.PI;
-                  const r = 40;
-                  const cx = 42 + r * Math.cos(angle);
-                  const cy = 42 + r * Math.sin(angle);
-                  return <circle key={i} cx={cx} cy={cy} r="2" fill="rgba(255,255,255,0.6)" />;
+              <svg width="66" height="66" viewBox="0 0 66 66" fill="none">
+                {Array.from({ length: 20 }).map((_, i) => {
+                  const angle = (i / 20) * 2 * Math.PI;
+                  const r = 31;
+                  const cx = 33 + r * Math.cos(angle);
+                  const cy = 33 + r * Math.sin(angle);
+                  return <circle key={i} cx={cx} cy={cy} r="1.8" fill="rgba(255,255,255,0.6)" />;
                 })}
               </svg>
             </motion.div>
             {/* Arrow */}
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <svg width="16" height="16" viewBox="0 0 18 18" fill="none">
               <path d="M9 3v12M3 9l6 6 6-6" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </button>
@@ -529,7 +529,7 @@ export default function RevisiHidupPage() {
         </motion.h2>
 
         {/* Journey items — single col mobile, 5 col desktop */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 160px), 1fr))", gap: "clamp(32px, 5vw, 40px)" }}>
+        <div className="flex flex-col sm:grid" style={{ gridTemplateColumns: "repeat(5, 1fr)", gap: "clamp(24px, 5vw, 40px)" }}>
           {[
             { img: "/images/whoami.webp",    title: "WHO AM I?",      desc: "Melihat di balik layar fitur-fitur yang membentuk pikiran, emosi, dan mindset kita" },
             { img: "/images/whereami.webp",  title: "WHERE AM I?",   desc: "Memahami dan menerima kondisi saat ini, serta berdamai dengan masa lalu" },
@@ -543,25 +543,24 @@ export default function RevisiHidupPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, ease, delay: i * 0.08 }}
-              className="flex flex-row sm:flex-col items-center sm:text-center text-left gap-5"
+              style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: 16 }}
             >
               <img
                 src={img}
                 alt={title}
-                className="shrink-0 sm:mb-4"
-                style={{ width: "clamp(64px, 10vw, 120px)", height: "clamp(64px, 10vw, 120px)", objectFit: "contain" }}
+                style={{ width: "clamp(72px, 10vw, 120px)", height: "clamp(72px, 10vw, 120px)", objectFit: "contain", flexShrink: 0 }}
               />
               <div>
                 <p style={{
                   fontFamily: "var(--font-inter-display), Inter, sans-serif",
-                  fontWeight: 700, fontSize: "clamp(15px, 2.5vw, 22px)", lineHeight: 1.3,
+                  fontWeight: 700, fontSize: "clamp(15px, 2.5vw, 20px)", lineHeight: 1.3,
                   color: "rgb(255,255,255)", margin: "0 0 8px",
                 }}>
                   {title}
                 </p>
                 <p style={{
                   fontFamily: "var(--font-inter-display), Inter, sans-serif",
-                  fontWeight: 400, fontSize: "clamp(13px, 1.8vw, 17px)", lineHeight: 1.6,
+                  fontWeight: 400, fontSize: "clamp(13px, 1.5vw, 16px)", lineHeight: 1.6,
                   color: "rgba(255,255,255,0.85)", margin: 0,
                 }}>
                   {desc}
