@@ -12,7 +12,7 @@ import { useLenis } from "@/hooks/use-lenis";
 
 const BASE_NAV_LINKS = [
   { label: "About Ali", href: "/about" },
-  { label: "Chat with Ali", href: "https://tanyaalizaenalabidin.vercel.app" },
+  { label: "Chat with Ali", href: "/#chat" },
   { label: "Revisi Hidup", href: "/revisi-hidup" },
   { label: "Mindful Manifestation", href: "/mindful-manifestation" },
   { label: "Store", href: "/products" },
@@ -116,25 +116,14 @@ export function Navbar() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.4, ease: easeOutExpo, delay: 0.05 + i * 0.06 }}
               >
-                {href.startsWith("http") ? (
-                  <a
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="px-2.5 xl:px-3 py-1.5 whitespace-nowrap font-body font-medium text-white"
-                    style={{ fontSize: "clamp(14px, 1.5vw, 21px)", lineHeight: "29px" }}
-                  >
-                    {label}
-                  </a>
-                ) : (
-                  <Link
-                    href={href}
-                    className="px-2.5 xl:px-3 py-1.5 whitespace-nowrap font-body font-medium text-white"
-                    style={{ fontSize: "clamp(14px, 1.5vw, 21px)", lineHeight: "29px" }}
-                  >
-                    {label}
-                  </Link>
-                )}
+                <Link
+                  href={href}
+                  onClick={href === "/#chat" ? scrollToChat : undefined}
+                  className="px-2.5 xl:px-3 py-1.5 whitespace-nowrap font-body font-medium text-white"
+                  style={{ fontSize: "clamp(14px, 1.5vw, 21px)", lineHeight: "29px" }}
+                >
+                  {label}
+                </Link>
               </motion.li>
             ))}
           </ul>
@@ -187,26 +176,16 @@ export function Navbar() {
             >
               {NAV_LINKS.map(({ label, href }) => (
                 <motion.li key={href} variants={itemVariants}>
-                  {href.startsWith("http") ? (
-                    <a
-                      href={href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="font-display text-4xl sm:text-5xl leading-none transition-colors hover:text-[#C8A96E] text-white"
-                    >
-                      {label}
-                    </a>
-                  ) : (
-                    <Link
-                      href={href}
-                      className={cn(
-                        "font-display text-4xl sm:text-5xl leading-none transition-colors hover:text-[#C8A96E]",
-                        pathname === href ? "text-[#C8A96E]" : "text-white"
-                      )}
-                    >
-                      {label}
-                    </Link>
-                  )}
+                  <Link
+                    href={href}
+                    onClick={href === "/#chat" ? scrollToChat : undefined}
+                    className={cn(
+                      "font-display text-4xl sm:text-5xl leading-none transition-colors hover:text-[#C8A96E]",
+                      pathname === href ? "text-[#C8A96E]" : "text-white"
+                    )}
+                  >
+                    {label}
+                  </Link>
                 </motion.li>
               ))}
             </motion.ul>
