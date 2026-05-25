@@ -7,22 +7,26 @@ export async function middleware(req: NextRequest) {
 
   let response = NextResponse.next({ request: req });
 
-  // Refresh Supabase session on every request
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() { return req.cookies.getAll(); },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) => req.cookies.set(name, value));
-          response = NextResponse.next({ request: req });
-          cookiesToSet.forEach(({ name, value, options }) => response.cookies.set(name, value, options));
+  // Refresh Supabase session on every request (skip if env vars missing)
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (supabaseUrl && supabaseKey) {
+    try {
+      const supabase = createServerClient(supabaseUrl, supabaseKey, {
+        cookies: {
+          getAll() { return req.cookies.getAll(); },
+          setAll(cookiesToSet) {
+            cookiesToSet.forEach(({ name, value }) => req.cookies.set(name, value));
+            response = NextResponse.next({ request: req });
+            cookiesToSet.forEach(({ name, value, options }) => response.cookies.set(name, value, options));
+          },
         },
-      },
+      });
+      await supabase.auth.getUser();
+    } catch {
+      // silently continue if Supabase fails
     }
-  );
-  await supabase.auth.getUser();
+  }
 
   // Rewrite tanya.alizaenalabidin.com/* → /tanya/*
   const isTanyaSubdomain =
