@@ -1,0 +1,106 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// ─── Auth ────────────────────────────────────────────────────────────────────
+
+enum Role {
+  member
+  admin
+}
+
+model User {
+  id             String   @id @default(cuid())
+  email          String   @unique
+  name           String?
+  passwordHash   String
+  role           Role     @default(member)
+  quotaGranted   Int      @default(0)  // extra questions granted (paid packages)
+  questionUsed   Int      @default(0)  // lifetime questions asked (authed users)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  conversations  ConversationLog[]
+  feedback       FeedbackLog[]
+}
+
+// ─── Knowledge ───────────────────────────────────────────────────────────────
+
+enum KnowledgeCategory {
+  BIOGRAPHY
+  PHILOSOPHY
+  PROGRAMS
+  BOOKS
+  FAQ
+  QA_PAIRS
+}
+
+model KnowledgeEntry {
+  id        String            @id @default(cuid())
+  title     String
+  content   String
+  category  KnowledgeCategory
+  tags      String            @default("") // comma-separated
+  isActive  Boolean           @default(true)
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+}
+
+model QAPair {
+  id         String            @id @default(cuid())
+  question   String
+  answer     String
+  category   KnowledgeCategory @default(FAQ)
+  isActive   Boolean           @default(true)
+  usageCount Int               @default(0)
+  createdAt  DateTime          @default(now())
+}
+
+// ─── Bot ─────────────────────────────────────────────────────────────────────
+
+model BotPersona {
+  id               String   @id @default(cuid())
+  systemPrompt     String
+  temperature      Float    @default(0.7)
+  model            String   @default("gpt-4o-mini")
+  maxTokens        Int      @default(800)
+  greetingMessage  String
+  fallbackMessage  String
+  updatedAt        DateTime @updatedAt
+}
+
+// ─── Conversations ───────────────────────────────────────────────────────────
+
+model ConversationLog {
+  id            String    @id @default(cuid())
+  sessionId     String
+  userId        String?
+  user          User?     @relation(fields: [userId], references: [id])
+  messages      String    // JSON array of {role, content, timestamp}
+  questionCount Int       @default(0)
+  quotaExhausted Boolean  @default(false)
+  startedAt     DateTime  @default(now())
+  endedAt       DateTime?
+
+  feedback      FeedbackLog[]
+
+  @@index([sessionId])
+  @@index([startedAt])
+}
+
+model FeedbackLog {
+  id                String          @id @default(cuid())
+  conversationLogId String
+  conversation      ConversationLog @relation(fields: [conversationLogId], references: [id])
+  userId            String?
+  user              User?           @relation(fields: [userId], references: [id])
+  messageIndex      Int
+  rating            Int             // 1-5
+  comment           String?
+  createdAt         DateTime        @default(now())
+}

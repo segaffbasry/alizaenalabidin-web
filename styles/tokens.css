@@ -1,0 +1,14 @@
+/* Design tokens for Ali Zaenal Abidin personal brand site */
+
+@theme inline {
+  /* Colors */
+  --color-primary: #F5F0E8;
+  --color-accent: #1A1A1A;
+  --color-gold: #C8A96E;
+  --color-muted: #6B6560;
+
+  /* Fonts */
+  --font-display: var(--font-bebas), 'Bebas Neue', Impact, sans-serif;
+  --font-body: var(--font-general-sans), 'General Sans', system-ui, sans-serif;
+  --font-logo: var(--font-malvian), 'Malvian', sans-serif;
+}
