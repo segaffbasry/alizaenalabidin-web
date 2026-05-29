@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef } from "react";
-import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 
@@ -59,24 +58,23 @@ export function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: easeOut, delay: 0.6 }}
         >
-          <Link href="/booking">
-            <motion.span
-              className="group inline-flex items-center justify-between gap-4 pl-6 pr-2 py-2 cursor-pointer select-none transition-colors duration-300 bg-[#6B8F8E] hover:bg-[#1A1A1A]"
-              style={{ borderRadius: "16px" }}
-              whileTap={{ scale: 0.97 }}
-              transition={{ type: "spring", stiffness: 400, damping: 20 }}
+          <motion.a
+            href="mailto:alizaenalabidin@gmail.com?subject=Book%20a%20Session%20with%20Ali&body=Hi%20Ali%2C%20I%27d%20like%20to%20book%20a%20session."
+            className="group inline-flex items-center justify-between gap-4 pl-6 pr-2 py-2 cursor-pointer select-none transition-colors duration-300 bg-[#6B8F8E] hover:bg-[#1A1A1A]"
+            style={{ borderRadius: "16px" }}
+            whileTap={{ scale: 0.97 }}
+            transition={{ type: "spring", stiffness: 400, damping: 20 }}
+          >
+            <span className="font-body font-medium text-white text-base whitespace-nowrap">
+              Book A Session With Ali
+            </span>
+            <span
+              className="flex items-center justify-center w-10 h-10 bg-[#1A1A1A] group-hover:bg-[#6B8F8E] transition-colors duration-300 flex-shrink-0"
+              style={{ borderRadius: "10px" }}
             >
-              <span className="font-body font-medium text-white text-base whitespace-nowrap">
-                Book A Session With Ali
-              </span>
-              <span
-                className="flex items-center justify-center w-10 h-10 bg-[#1A1A1A] group-hover:bg-[#6B8F8E] transition-colors duration-300 flex-shrink-0"
-                style={{ borderRadius: "10px" }}
-              >
-                <ArrowRight size={17} className="text-white" />
-              </span>
-            </motion.span>
-          </Link>
+              <ArrowRight size={17} className="text-white" />
+            </span>
+          </motion.a>
         </motion.div>
       </div>
     </section>

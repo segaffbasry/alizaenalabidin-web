@@ -110,7 +110,7 @@ function TestimonialCard({ t }: { t: typeof TESTIMONIALS[0] }) {
         }}
       >
         {t.avatar ? (
-          <img src={t.avatar} alt={t.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+          <img src={t.avatar} alt={t.name} draggable={false} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
         ) : (
           <span style={{ fontFamily: "var(--font-playfair), serif", fontSize: 22, fontWeight: 600, color: "#fff" }}>
             {t.initials}
@@ -139,14 +139,78 @@ function TestimonialCard({ t }: { t: typeof TESTIMONIALS[0] }) {
 
 export function TestimonialsSection() {
   const trackRef = useRef<HTMLUListElement>(null);
-  const animRef = useRef<Animation | null>(null);
+  const xRef = useRef(0);
+  const halfRef = useRef(0);
+  const draggingRef = useRef(false);
+  const movedRef = useRef(false);
+  const pointerStartRef = useRef(0);
+  const xStartRef = useRef(0);
 
   useEffect(() => {
-    const el = trackRef.current;
-    if (!el) return;
-    const anim = el.getAnimations()[0];
-    if (anim) animRef.current = anim;
-  });
+    const track = trackRef.current;
+    if (!track) return;
+    let raf = 0;
+    const SPEED = 0.5; // px/frame ≈ matches the old 40s loop
+
+    const measure = () => { halfRef.current = track.scrollWidth / 2; };
+    measure();
+    window.addEventListener("resize", measure);
+
+    const wrap = () => {
+      const half = halfRef.current;
+      if (half <= 0) return;
+      while (xRef.current <= -half) xRef.current += half;
+      while (xRef.current > 0) xRef.current -= half;
+    };
+
+    const tick = () => {
+      if (!draggingRef.current) {
+        xRef.current -= SPEED;
+        wrap();
+        track.style.transform = `translate3d(${xRef.current}px,0,0)`;
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("resize", measure);
+    };
+  }, []);
+
+  const onPointerDown = (e: React.PointerEvent) => {
+    draggingRef.current = true;
+    movedRef.current = false;
+    pointerStartRef.current = e.clientX;
+    xStartRef.current = xRef.current;
+    e.currentTarget.setPointerCapture(e.pointerId);
+    (e.currentTarget as HTMLElement).style.cursor = "grabbing";
+  };
+
+  const onPointerMove = (e: React.PointerEvent) => {
+    if (!draggingRef.current) return;
+    const dx = e.clientX - pointerStartRef.current;
+    if (Math.abs(dx) > 3) movedRef.current = true;
+    xRef.current = xStartRef.current + dx;
+    const half = halfRef.current;
+    if (half > 0) {
+      while (xRef.current <= -half) xRef.current += half;
+      while (xRef.current > 0) xRef.current -= half;
+    }
+    if (trackRef.current) trackRef.current.style.transform = `translate3d(${xRef.current}px,0,0)`;
+  };
+
+  const endDrag = (e: React.PointerEvent) => {
+    draggingRef.current = false;
+    try { e.currentTarget.releasePointerCapture(e.pointerId); } catch {}
+    (e.currentTarget as HTMLElement).style.cursor = "grab";
+  };
+
+  // Suppress card click/hover jitter that fires after a drag
+  const onClickCapture = (e: React.MouseEvent) => {
+    if (movedRef.current) { e.preventDefault(); e.stopPropagation(); }
+  };
 
   return (
     <section style={{ background: "linear-gradient(to bottom, #ffffff, #f6f5f1 50%, #ffffff)", display: "flex", flexDirection: "column", justifyContent: "center", paddingTop: "clamp(48px, 7vw, 80px)", paddingBottom: "clamp(48px, 7vw, 80px)", overflow: "hidden" }}>
@@ -178,11 +242,14 @@ export function TestimonialsSection() {
         </p>
       </div>
 
-      {/* Marquee */}
+      {/* Marquee — auto-scrolls and is draggable/swipeable */}
       <div
-        style={{ position: "relative" }}
-        onMouseEnter={() => { if (animRef.current) animRef.current.playbackRate = 0.25; }}
-        onMouseLeave={() => { if (animRef.current) animRef.current.playbackRate = 1; }}
+        style={{ position: "relative", cursor: "grab", touchAction: "pan-y" }}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={endDrag}
+        onPointerCancel={endDrag}
+        onClickCapture={onClickCapture}
       >
         {/* Edge fades */}
         <div style={{ pointerEvents: "none", position: "absolute", top: 0, bottom: 0, left: 0, width: "clamp(24px, 6vw, 80px)", background: "linear-gradient(to right, #ffffff, transparent)", zIndex: 10 }} />
@@ -190,7 +257,7 @@ export function TestimonialsSection() {
 
         <ul
           ref={trackRef}
-          style={{ display: "flex", width: "max-content", animation: "marquee-left 40s linear infinite", willChange: "transform", margin: 0, padding: 0 }}
+          style={{ display: "flex", width: "max-content", willChange: "transform", margin: 0, padding: 0 }}
         >
           {LOOP.map((t, i) => (
             <TestimonialCard key={`${t.id}-${i}`} t={t} />

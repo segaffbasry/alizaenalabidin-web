@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { NewsletterForm } from "@/components/layout/newsletter-form";
+import { FooterNavLink } from "@/components/layout/footer-nav-link";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -8,7 +8,7 @@ const NAV_LINKS = [
   { label: "Mindful Manifestation", href: "/mindful-manifestation" },
   { label: "Products", href: "/products" },
   { label: "Login", href: "/login" },
-  { label: "Chat With Ali", href: "/chat" },
+  { label: "Chat With Ali", href: "/tanya" },
 ];
 
 function InstagramIcon() {
@@ -132,14 +132,14 @@ export function Footer() {
           {/* Nav links — wrap on mobile, right-align on desktop */}
           <nav className="flex flex-wrap items-center justify-center md:justify-end gap-x-5 gap-y-2">
             {NAV_LINKS.map(({ label, href }) => (
-              <Link
+              <FooterNavLink
                 key={href}
                 href={href}
                 style={{ fontFamily: "'General Sans', 'General Sans Placeholder', sans-serif", fontWeight: 500, fontSize: "clamp(13px, 2vw, 18px)", lineHeight: "22px", color: "rgb(38,38,38)" }}
                 className="hover:opacity-70 transition-opacity"
               >
                 {label}
-              </Link>
+              </FooterNavLink>
             ))}
           </nav>
 

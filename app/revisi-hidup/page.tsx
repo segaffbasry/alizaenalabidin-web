@@ -36,6 +36,15 @@ const SPEAKERS = [
 ];
 
 
+/* Past Revisi Hidup guest speakers. Add { img, name?, role? } entries here as
+   more speaker photos/details become available. */
+const PAST_SPEAKERS: { img: string; name?: string; role?: string }[] = [
+  { img: "/images/guestpast1revpage.avif" },
+  { img: "/images/guestpast2revpage.avif" },
+  { img: "/images/guestpast3revpage.avif" },
+  { img: "/images/guestpast4revpage.avif" },
+];
+
 const FAQS = [
   {
     q: "Apa agenda kegiatan dalam workshop Revisi Hidup?",
@@ -146,6 +155,7 @@ export default function RevisiHidupPage() {
   const heroRef = useRef<HTMLElement>(null);
   const nextSectionRef = useRef<HTMLElement>(null);
   const { lenis } = useLenis();
+  const [speakersOpen, setSpeakersOpen] = useState(false);
 
   function scrollToNext() {
     const el = nextSectionRef.current;
@@ -723,13 +733,16 @@ export default function RevisiHidupPage() {
               <span style={{ color: "rgba(255,255,255,0.45)" }}>Revisi Hidup sebelumnya</span>
             </motion.h2>
 
-            {/* Bottom row */}
-            <motion.div
+            {/* Bottom row — opens the full speaker list */}
+            <motion.button
+              type="button"
+              onClick={() => setSpeakersOpen(true)}
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.15 }}
-              style={{ display: "flex", alignItems: "center", gap: 16 }}
+              aria-label="See all guest speakers"
+              style={{ display: "flex", alignItems: "center", gap: 16, width: "100%", background: "transparent", border: "none", padding: 0, cursor: "pointer", textAlign: "left" }}
             >
               <span style={{ fontFamily: "Inter, sans-serif", fontWeight: 400, fontSize: 15, color: "rgba(255,255,255,0.7)", whiteSpace: "nowrap" }}>
                 20+ Speakers
@@ -748,17 +761,15 @@ export default function RevisiHidupPage() {
                   <path d="M3 13L13 3M13 3H5M13 3V11" stroke="#FF2727" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </div>
-            </motion.div>
+            </motion.button>
           </div>
 
-          {/* Right — 2×2 photo grid */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-            {[
-              "/images/guestpast1revpage.avif",
-              "/images/guestpast2revpage.avif",
-              "/images/guestpast3revpage.avif",
-              "/images/guestpast4revpage.avif",
-            ].map((src, i) => (
+          {/* Right — 2×2 photo grid (also opens the full list) */}
+          <div
+            onClick={() => setSpeakersOpen(true)}
+            style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, cursor: "pointer" }}
+          >
+            {PAST_SPEAKERS.map(({ img: src }, i) => (
               <motion.div
                 key={src}
                 initial={{ opacity: 0, y: 24 }}
@@ -782,6 +793,78 @@ export default function RevisiHidupPage() {
           </div>
         </div>
       </section>
+
+      {/* ══ GUEST SPEAKERS MODAL ══════════════════════════════ */}
+      <AnimatePresence>
+        {speakersOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSpeakersOpen(false)}
+            style={{
+              position: "fixed", inset: 0, zIndex: 100,
+              background: "rgba(20,0,0,0.6)", backdropFilter: "blur(4px)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              padding: "clamp(16px, 4vw, 48px)",
+            }}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96, y: 16 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.96, y: 16 }}
+              transition={{ type: "spring", stiffness: 260, damping: 26 }}
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                background: "#FF2727", borderRadius: 24,
+                width: "min(100%, 880px)", maxHeight: "88vh", overflowY: "auto",
+                padding: "clamp(24px, 4vw, 44px)",
+                position: "relative",
+              }}
+            >
+              {/* Close */}
+              <button
+                type="button"
+                onClick={() => setSpeakersOpen(false)}
+                aria-label="Close"
+                style={{
+                  position: "absolute", top: 16, right: 16,
+                  width: 40, height: 40, borderRadius: "50%",
+                  background: "#fff", border: "none", cursor: "pointer",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                }}
+              >
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M3 3L13 13M13 3L3 13" stroke="#FF2727" strokeWidth="2" strokeLinecap="round" />
+                </svg>
+              </button>
+
+              <p style={{ fontFamily: "Inter, sans-serif", fontWeight: 400, fontSize: 14, letterSpacing: "0.05em", color: "rgba(255,255,255,0.7)", margin: "0 0 8px" }}>
+                Our Guest Speakers
+              </p>
+              <h3 style={{ fontFamily: "var(--font-inter-display), Inter, sans-serif", fontWeight: 400, fontSize: "clamp(24px, 3.4vw, 38px)", lineHeight: 1.15, color: "#fff", margin: "0 0 28px", maxWidth: 560 }}>
+                Mereka yang pernah menjadi pembicara di Revisi Hidup
+              </h3>
+
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))", gap: 16 }}>
+                {PAST_SPEAKERS.map(({ img, name, role }, i) => (
+                  <div key={img} style={{ borderRadius: 14, overflow: "hidden", background: "#fff" }}>
+                    <div style={{ aspectRatio: "3 / 3.5", overflow: "hidden" }}>
+                      <img src={img} alt={name ?? `Guest Speaker ${i + 1}`} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center" }} />
+                    </div>
+                    {(name || role) && (
+                      <div style={{ padding: "10px 12px 14px" }}>
+                        {name && <p style={{ fontFamily: "Inter, sans-serif", fontWeight: 600, fontSize: 14, color: "#1a1a1a", margin: 0 }}>{name}</p>}
+                        {role && <p style={{ fontFamily: "Inter, sans-serif", fontWeight: 400, fontSize: 12, color: "rgba(0,0,0,0.55)", margin: "2px 0 0" }}>{role}</p>}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* ══ REGISTRATION CTA ══════════════════════════════════ */}
       <section style={{ background: "#FF2727", padding: "clamp(40px, 6vw, 80px) clamp(20px, 6vw, 80px) clamp(50px, 8vw, 100px)" }}>

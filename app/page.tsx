@@ -23,14 +23,14 @@ import { StatsSection } from "@/components/home/stats-section";
 import { YouTubeSection } from "@/components/home/youtube-section";
 import { ChatWidgetSection } from "@/components/home/chat-widget-section";
 import { ScrollReset } from "@/components/ui/scroll-reset";
-import AboutHero from "@/components/about/about-hero";
+import { AboutSummary } from "@/components/home/about-summary";
 
 export default function HomePage() {
   return (
     <>
       <ScrollReset />
       <HeroSection />
-      <AboutHero />
+      <AboutSummary />
       <StatsSection />
       <ChatWidgetSection />
       <EventsSection />

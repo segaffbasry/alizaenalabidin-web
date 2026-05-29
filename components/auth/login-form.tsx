@@ -22,9 +22,14 @@ export default function LoginForm() {
     setError(null);
     setLoading(true);
     const supabase = createClient();
-    const { error: err } = await supabase.auth.signInWithPassword({ email, password });
+    const { data, error: err } = await supabase.auth.signInWithPassword({ email, password });
     if (err) {
       setError("Email atau password salah. Silakan coba lagi.");
+      setLoading(false);
+    } else if (!data.user?.email_confirmed_at) {
+      // Block access until the email is verified.
+      await supabase.auth.signOut();
+      setError("Email kamu belum dikonfirmasi. Silakan cek inbox (dan folder spam) untuk link verifikasi.");
       setLoading(false);
     } else {
       router.push(callbackUrl);

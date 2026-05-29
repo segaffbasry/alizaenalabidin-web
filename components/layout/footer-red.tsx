@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { NewsletterForm } from "@/components/layout/newsletter-form";
+import { FooterNavLink } from "@/components/layout/footer-nav-link";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -8,7 +8,7 @@ const NAV_LINKS = [
   { label: "Mindful Manifestation", href: "/mindful-manifestation" },
   { label: "Products", href: "/products" },
   { label: "Login", href: "/login" },
-  { label: "Chat With Ali", href: "/chat" },
+  { label: "Chat With Ali", href: "/tanya" },
 ];
 
 function InstagramIcon() {
@@ -103,13 +103,13 @@ export function FooterRed() {
       <div style={{ borderTop: "1px solid rgba(255,255,255,0.2)", paddingTop: 24, display: "flex", flexDirection: "column", gap: 16 }}>
         <nav className="flex flex-wrap items-center justify-center md:justify-end gap-x-5 gap-y-2">
           {NAV_LINKS.map(({ label, href }) => (
-            <Link
+            <FooterNavLink
               key={href}
               href={href}
               style={{ fontFamily: "'General Sans', sans-serif", fontWeight: 500, fontSize: "clamp(13px, 2vw, 18px)", color: "rgba(255,255,255,0.8)" }}
             >
               {label}
-            </Link>
+            </FooterNavLink>
           ))}
         </nav>
 

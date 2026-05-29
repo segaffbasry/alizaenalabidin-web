@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
+import { cookieOptions } from "@/lib/supabase/cookie-options";
 
 export async function middleware(req: NextRequest) {
   const hostname = req.headers.get("host") ?? "";
@@ -13,6 +14,7 @@ export async function middleware(req: NextRequest) {
   if (supabaseUrl && supabaseKey) {
     try {
       const supabase = createServerClient(supabaseUrl, supabaseKey, {
+        cookieOptions,
         cookies: {
           getAll() { return req.cookies.getAll(); },
           setAll(cookiesToSet) {

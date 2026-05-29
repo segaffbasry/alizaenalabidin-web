@@ -3,16 +3,15 @@
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { motion } from "framer-motion";
 
 const easeOut = (t: number) => 1 - Math.pow(2, -10 * t);
 
 export default function RegisterForm() {
-  const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "/upgrade";
+  const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -22,6 +21,7 @@ export default function RegisterForm() {
   const [confirm, setConfirm] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,7 +34,10 @@ export default function RegisterForm() {
     const { error: err } = await supabase.auth.signUp({
       email,
       password,
-      options: { data: { name } },
+      options: {
+        data: { name },
+        emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(callbackUrl)}`,
+      },
     });
 
     if (err) {
@@ -43,8 +46,9 @@ export default function RegisterForm() {
         : err.message);
       setLoading(false);
     } else {
-      router.push(callbackUrl);
-      router.refresh();
+      // Don't grant access yet — require email confirmation first.
+      setSuccess(true);
+      setLoading(false);
     }
   };
 
@@ -57,6 +61,32 @@ export default function RegisterForm() {
   const strength = passwordStrength(password);
   const strengthLabel = { weak: "Lemah", medium: "Sedang", strong: "Kuat" };
   const strengthColor = { weak: "bg-red-400", medium: "bg-amber-400", strong: "bg-green-500" };
+
+  if (success) {
+    return (
+      <motion.div
+        className="w-full max-w-md"
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: easeOut }}
+      >
+        <div className="bg-white rounded-3xl shadow-sm border border-[var(--color-gold)]/10 p-8 text-center">
+          <div className="text-5xl mb-4">✉️</div>
+          <h2 className="font-display text-xl text-[var(--color-accent)] mb-2">Cek email kamu</h2>
+          <p className="font-body text-sm text-[var(--color-muted)] leading-relaxed">
+            Kami sudah mengirim link konfirmasi ke <span className="font-medium text-[var(--color-accent)]">{email}</span>.
+            Klik link tersebut untuk mengaktifkan akun, lalu masuk.
+          </p>
+          <Link
+            href="/login"
+            className="inline-block mt-6 py-3 px-6 bg-[var(--color-accent)] text-white font-body font-medium rounded-xl hover:bg-[var(--color-gold)] transition-colors"
+          >
+            Ke halaman Masuk
+          </Link>
+        </div>
+      </motion.div>
+    );
+  }
 
   return (
     <motion.div

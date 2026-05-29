@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { Clock } from "lucide-react";
+import { Clock, ChevronLeft, ChevronRight } from "lucide-react";
 
 const VIDEOS = [
   {
@@ -66,6 +66,7 @@ function VideoCard({ video }: { video: typeof VIDEOS[0] }) {
           <img
             src={video.thumb}
             alt={video.title}
+            draggable={false}
             style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
           />
         </div>
@@ -104,16 +105,115 @@ function VideoCard({ video }: { video: typeof VIDEOS[0] }) {
   );
 }
 
+const CARD_STEP = 352 + 16; // card width + marginRight
+
+function arrowStyle(side: "left" | "right"): React.CSSProperties {
+  return {
+    position: "absolute",
+    top: "calc(50% - 38px)", // center on the thumbnail row
+    [side]: "clamp(8px, 2vw, 24px)",
+    transform: "translateY(-50%)",
+    zIndex: 11,
+    width: 44,
+    height: 44,
+    borderRadius: "50%",
+    background: "rgba(255,255,255,0.92)",
+    border: "1px solid #e6e4df",
+    boxShadow: "0 2px 10px rgba(0,0,0,0.12)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    cursor: "pointer",
+  };
+}
+
 export function YouTubeSection() {
   const trackRef = useRef<HTMLUListElement>(null);
-  const animRef = useRef<Animation | null>(null);
+  const xRef = useRef(0);
+  const halfRef = useRef(0);
+  const draggingRef = useRef(false);
+  const nudgingRef = useRef(false);
+  const movedRef = useRef(false);
+  const pointerStartRef = useRef(0);
+  const xStartRef = useRef(0);
+
+  const wrapX = () => {
+    const half = halfRef.current;
+    if (half <= 0) return;
+    while (xRef.current <= -half) xRef.current += half;
+    while (xRef.current > 0) xRef.current -= half;
+  };
 
   useEffect(() => {
-    const el = trackRef.current;
-    if (!el) return;
-    const anim = el.getAnimations()[0];
-    if (anim) animRef.current = anim;
-  });
+    const track = trackRef.current;
+    if (!track) return;
+    let raf = 0;
+    const SPEED = 0.5;
+
+    const measure = () => { halfRef.current = track.scrollWidth / 2; };
+    measure();
+    window.addEventListener("resize", measure);
+
+    const tick = () => {
+      if (!draggingRef.current && !nudgingRef.current) {
+        xRef.current -= SPEED;
+        wrapX();
+        track.style.transform = `translate3d(${xRef.current}px,0,0)`;
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("resize", measure);
+    };
+  }, []);
+
+  // Arrow buttons: dir = +1 (next, move left), -1 (prev, move right)
+  const nudge = (dir: number) => {
+    const track = trackRef.current;
+    if (!track || nudgingRef.current || draggingRef.current) return;
+    nudgingRef.current = true;
+    xRef.current -= dir * CARD_STEP;
+    track.style.transition = "transform 0.45s ease";
+    track.style.transform = `translate3d(${xRef.current}px,0,0)`;
+    window.setTimeout(() => {
+      track.style.transition = "";
+      wrapX();
+      track.style.transform = `translate3d(${xRef.current}px,0,0)`;
+      nudgingRef.current = false;
+    }, 460);
+  };
+
+  const onPointerDown = (e: React.PointerEvent) => {
+    if (nudgingRef.current) return;
+    draggingRef.current = true;
+    movedRef.current = false;
+    pointerStartRef.current = e.clientX;
+    xStartRef.current = xRef.current;
+    e.currentTarget.setPointerCapture(e.pointerId);
+    (e.currentTarget as HTMLElement).style.cursor = "grabbing";
+  };
+
+  const onPointerMove = (e: React.PointerEvent) => {
+    if (!draggingRef.current) return;
+    const dx = e.clientX - pointerStartRef.current;
+    if (Math.abs(dx) > 3) movedRef.current = true;
+    xRef.current = xStartRef.current + dx;
+    wrapX();
+    if (trackRef.current) trackRef.current.style.transform = `translate3d(${xRef.current}px,0,0)`;
+  };
+
+  const endDrag = (e: React.PointerEvent) => {
+    draggingRef.current = false;
+    try { e.currentTarget.releasePointerCapture(e.pointerId); } catch {}
+    (e.currentTarget as HTMLElement).style.cursor = "grab";
+  };
+
+  const onClickCapture = (e: React.MouseEvent) => {
+    if (movedRef.current) { e.preventDefault(); e.stopPropagation(); }
+  };
 
   return (
     <section
@@ -152,22 +252,42 @@ export function YouTubeSection() {
         </p>
       </div>
 
-      {/* Marquee */}
+      {/* Marquee — auto-scrolls, draggable, with arrow controls */}
       <div
-        style={{ position: "relative" }}
-        onMouseEnter={() => { if (animRef.current) animRef.current.playbackRate = 0.25; }}
-        onMouseLeave={() => { if (animRef.current) animRef.current.playbackRate = 1; }}
+        style={{ position: "relative", cursor: "grab", touchAction: "pan-y" }}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={endDrag}
+        onPointerCancel={endDrag}
+        onClickCapture={onClickCapture}
       >
         {/* Edge fades */}
         <div style={{ pointerEvents: "none", position: "absolute", top: 0, bottom: 0, left: 0, width: 80, background: "linear-gradient(to right, #f9faf7, transparent)", zIndex: 10 }} />
         <div style={{ pointerEvents: "none", position: "absolute", top: 0, bottom: 0, right: 0, width: 80, background: "linear-gradient(to left, #f9faf7, transparent)", zIndex: 10 }} />
+
+        {/* Arrow controls */}
+        <button
+          type="button"
+          aria-label="Previous videos"
+          onClick={() => nudge(-1)}
+          style={arrowStyle("left")}
+        >
+          <ChevronLeft size={22} color="#1a1a1a" />
+        </button>
+        <button
+          type="button"
+          aria-label="Next videos"
+          onClick={() => nudge(1)}
+          style={arrowStyle("right")}
+        >
+          <ChevronRight size={22} color="#1a1a1a" />
+        </button>
 
         <ul
           ref={trackRef}
           style={{
             display: "flex",
             width: "max-content",
-            animation: "marquee-left 40s linear infinite",
             willChange: "transform",
             margin: 0,
             padding: "8px 0 8px 24px",
