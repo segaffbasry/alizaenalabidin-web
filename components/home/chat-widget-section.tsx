@@ -15,22 +15,37 @@ interface Message {
 }
 
 const AIBOT_URL = process.env.NEXT_PUBLIC_AIBOT_URL || "https://tanya.alizaenalabidin.com";
+const GUEST_LIMIT = 10;
+const GUEST_COUNT_KEY = "aza_guest_chat_count";
 
 export function ChatWidgetSection() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [guestCount, setGuestCount] = useState(0);
   const bottomRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const stored = Number(localStorage.getItem(GUEST_COUNT_KEY) || "0");
+    if (!Number.isNaN(stored)) setGuestCount(stored);
+  }, []);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  const limitReached = guestCount >= GUEST_LIMIT;
+
   const send = async (text: string) => {
     const trimmed = text.trim();
-    if (!trimmed || loading) return;
+    if (!trimmed || loading || limitReached) return;
     setInput("");
     setMessages((prev) => [...prev, { role: "user", content: trimmed }]);
+    setGuestCount((prev) => {
+      const next = prev + 1;
+      localStorage.setItem(GUEST_COUNT_KEY, String(next));
+      return next;
+    });
     setLoading(true);
 
     try {
@@ -122,7 +137,8 @@ export function ChatWidgetSection() {
                     <button
                       key={p}
                       onClick={() => send(p)}
-                      className="w-full text-left text-sm text-[#1A1A1A] border border-[#e8e3d9] rounded-xl px-4 py-3 hover:border-[#C8A96E] hover:bg-[#faf7f2] transition-colors"
+                      disabled={limitReached}
+                      className="w-full text-left text-sm text-[#1A1A1A] border border-[#e8e3d9] rounded-xl px-4 py-3 hover:border-[#C8A96E] hover:bg-[#faf7f2] transition-colors disabled:opacity-40 disabled:hover:border-[#e8e3d9] disabled:hover:bg-transparent"
                     >
                       {p}
                     </button>
@@ -154,6 +170,21 @@ export function ChatWidgetSection() {
             <div ref={bottomRef} />
           </div>
 
+          {/* Limit notice */}
+          {limitReached && (
+            <div className="border-t border-[#e8e3d9] bg-[#faf7f2] px-5 py-4 text-center">
+              <p className="text-sm text-[#1A1A1A] mb-3">
+                Kamu sudah mencapai batas {GUEST_LIMIT} pesan sebagai tamu. Daftar gratis untuk lanjut ngobrol dengan AI Ali.
+              </p>
+              <a
+                href="/register"
+                className="inline-flex items-center px-6 py-2.5 rounded-full bg-[#6B8F8E] text-white text-sm font-medium hover:bg-[#5e807f] transition-colors"
+              >
+                Daftar sekarang
+              </a>
+            </div>
+          )}
+
           {/* Input */}
           <form
             onSubmit={(e) => { e.preventDefault(); send(input); }}
@@ -163,14 +194,14 @@ export function ChatWidgetSection() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(input); } }}
-              placeholder="Tanya AZA"
-              disabled={loading}
+              placeholder={limitReached ? "Batas pesan tamu tercapai" : "Tanya AZA"}
+              disabled={loading || limitReached}
               rows={3}
               className="w-full resize-none text-base border-0 px-5 pt-5 pb-14 focus:outline-none bg-white placeholder:text-[#9a9490] disabled:opacity-50"
             />
             <button
               type="submit"
-              disabled={loading || !input.trim()}
+              disabled={loading || limitReached || !input.trim()}
               className="absolute bottom-4 right-4 bg-[#e8e3d9] text-[#1A1A1A] rounded-full w-10 h-10 flex items-center justify-center hover:bg-[#d4cfc9] transition-colors disabled:opacity-40"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
