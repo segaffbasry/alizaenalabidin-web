@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
 
     const orderId = `AZA-${Date.now()}`;
     const grossAmount = Math.round(
-      items.reduce((sum, item) => sum + (item.price / 100) * item.quantity, 0)
+      items.reduce((sum, item) => sum + (item.price) * item.quantity, 0)
     );
 
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
       credit_card: { secure: true },
       item_details: items.map((item) => ({
         id: item.variantId,
-        price: Math.round(item.price / 100),
+        price: Math.round(item.price),
         quantity: item.quantity,
         name: `${item.title} - ${item.variantTitle}`.slice(0, 50),
       })),
