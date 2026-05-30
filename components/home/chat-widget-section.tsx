@@ -199,16 +199,34 @@ export function ChatWidgetSection() {
               rows={3}
               className="w-full resize-none text-base border-0 px-5 pt-5 pb-14 focus:outline-none bg-white placeholder:text-[#9a9490] disabled:opacity-50"
             />
-            <div
-              className={`absolute bottom-4 left-4 flex items-center gap-1.5 rounded-full border px-3 h-8 text-xs font-medium ${
-                limitReached
-                  ? "border-[#e0bdbd] bg-[#fbeeee] text-[#a35a5a]"
-                  : "border-[#e8e3d9] bg-[#faf7f2] text-[#6B6560]"
-              }`}
-              title={`Batas ${GUEST_LIMIT} pesan untuk tamu`}
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-current opacity-70" />
-              {limitReached ? "Batas tercapai" : `Sisa ${GUEST_LIMIT - guestCount} pesan`}
+            <div className="group absolute bottom-4 left-4">
+              <svg width="32" height="32" viewBox="0 0 32 32" className="-rotate-90">
+                <circle cx="16" cy="16" r="13" fill="none" stroke="#e8e3d9" strokeWidth="3" />
+                <circle
+                  cx="16"
+                  cy="16"
+                  r="13"
+                  fill="none"
+                  stroke={limitReached ? "#c87e7e" : "#6B8F8E"}
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeDasharray={2 * Math.PI * 13}
+                  strokeDashoffset={2 * Math.PI * 13 * (1 - Math.min(guestCount, GUEST_LIMIT) / GUEST_LIMIT)}
+                  className="transition-all duration-300"
+                />
+              </svg>
+              <span
+                className={`absolute inset-0 flex items-center justify-center text-[10px] font-semibold ${
+                  limitReached ? "text-[#a35a5a]" : "text-[#6B6560]"
+                }`}
+              >
+                {Math.max(GUEST_LIMIT - guestCount, 0)}
+              </span>
+              <div className="pointer-events-none absolute bottom-full left-0 mb-2 w-max max-w-[200px] rounded-lg bg-[#1A1A1A] px-3 py-2 text-xs text-white opacity-0 shadow-lg transition-opacity duration-200 group-hover:opacity-100">
+                {limitReached
+                  ? `Kamu sudah memakai semua ${GUEST_LIMIT} pesan tamu.`
+                  : `Sisa ${GUEST_LIMIT - guestCount} dari ${GUEST_LIMIT} pesan gratis untuk tamu.`}
+              </div>
             </div>
             <button
               type="submit"
