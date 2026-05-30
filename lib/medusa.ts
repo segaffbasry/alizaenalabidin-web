@@ -94,7 +94,7 @@ export async function listProducts(params?: {
   if (params?.limit) qs.set("limit", String(params.limit));
   if (params?.offset) qs.set("offset", String(params.offset));
   qs.set("fields", "id,title,handle,subtitle,description,thumbnail,*images,*type,tags,variants,variants.prices,variants.calculated_price,status");
-  qs.set("region_id", "reg_01KS2KY9W2N9ZDTYYQBQ8ZGDEC");
+  qs.set("region_id", "reg_01KSWS4EA9T96SWYGQ7HQRTHK5");
 
   return medusaFetch(`/products?${qs.toString()}`);
 }
@@ -102,7 +102,7 @@ export async function listProducts(params?: {
 export async function getProduct(handle: string): Promise<{ product: MedusaProduct }> {
   const fields = "id,title,handle,subtitle,description,thumbnail,*images,*type,tags,variants,variants.prices,variants.calculated_price,status";
   const res = await medusaFetch<{ products: MedusaProduct[]; count: number }>(
-    `/products?handle=${handle}&fields=${fields}&region_id=reg_01KS2KY9W2N9ZDTYYQBQ8ZGDEC`
+    `/products?handle=${handle}&fields=${fields}&region_id=reg_01KSWS4EA9T96SWYGQ7HQRTHK5`
   );
   const product = res.products?.[0];
   if (!product) throw new Error(`Product not found: ${handle}`);
