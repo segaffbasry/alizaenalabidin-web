@@ -52,7 +52,7 @@ export default function DashboardShell({ user }: DashboardShellProps) {
         </div>
         <div className="flex items-center gap-3">
           <a
-            href="https://tanyaalizaenalabidin.vercel.app"
+            href="https://tanya.alizaenalabidin.com"
             target="_blank"
             rel="noopener noreferrer"
             className="hidden sm:inline-flex items-center gap-2 px-4 py-2 bg-[var(--color-accent)] text-white font-body text-sm rounded-xl hover:bg-[var(--color-gold)] transition-colors"
