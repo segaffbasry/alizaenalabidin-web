@@ -79,7 +79,7 @@ export const useCartStore = create<CartState>()(
 
 export function formatIDR(amount: number): string {
   // amount is in smallest unit (* 100), divide by 100 first
-  const idr = amount / 100;
+  const idr = amount;
   return new Intl.NumberFormat("id-ID", {
     style: "currency",
     currency: "IDR",
