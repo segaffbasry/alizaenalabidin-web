@@ -199,6 +199,17 @@ export function ChatWidgetSection() {
               rows={3}
               className="w-full resize-none text-base border-0 px-5 pt-5 pb-14 focus:outline-none bg-white placeholder:text-[#9a9490] disabled:opacity-50"
             />
+            <div
+              className={`absolute bottom-4 left-4 flex items-center gap-1.5 rounded-full border px-3 h-8 text-xs font-medium ${
+                limitReached
+                  ? "border-[#e0bdbd] bg-[#fbeeee] text-[#a35a5a]"
+                  : "border-[#e8e3d9] bg-[#faf7f2] text-[#6B6560]"
+              }`}
+              title={`Batas ${GUEST_LIMIT} pesan untuk tamu`}
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-current opacity-70" />
+              {limitReached ? "Batas tercapai" : `Sisa ${GUEST_LIMIT - guestCount} pesan`}
+            </div>
             <button
               type="submit"
               disabled={loading || limitReached || !input.trim()}
