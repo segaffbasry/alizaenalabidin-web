@@ -14,7 +14,7 @@ interface Message {
   content: string;
 }
 
-const AIBOT_URL = process.env.NEXT_PUBLIC_AIBOT_URL || "https://tanya.alizaenalabidin.com";
+const AIBOT_URL = "https://tanya.alizaenalabidin.com";
 const GUEST_LIMIT = 10;
 const GUEST_COUNT_KEY = "aza_guest_chat_count";
 
