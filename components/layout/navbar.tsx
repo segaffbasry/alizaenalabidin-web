@@ -12,10 +12,10 @@ import { useLenis } from "@/hooks/use-lenis";
 
 const BASE_NAV_LINKS = [
   { label: "About Ali", href: "/about" },
-  { label: "Chat with Ali", href: "/#chat" },
+  // { label: "Chat with Ali", href: "/#chat" }, — hidden
   { label: "Revisi Hidup", href: "/revisi-hidup" },
   { label: "Mindful Manifestation", href: "/mindful-manifestation" },
-  { label: "Store", href: "/products" },
+  // { label: "Store", href: "/products" }, — hidden (Products)
 ] as const;
 
 const easeOutExpo = (t: number) => 1 - Math.pow(2, -10 * t);
@@ -75,10 +75,12 @@ export function Navbar() {
 
   const NAV_LINKS = [
     ...BASE_NAV_LINKS,
-    isAuthed
-      ? { label: "Dashboard", href: "/dashboard" }
-      : { label: "Member", href: "/login" },
+    // Membership link hidden
+    // isAuthed
+    //   ? { label: "Dashboard", href: "/dashboard" }
+    //   : { label: "Member", href: "/login" },
   ] as { label: string; href: string }[];
+  void isAuthed;
 
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";

@@ -21,7 +21,7 @@ import { BooksSection } from "@/components/home/books-section";
 import { TestimonialsSection } from "@/components/home/testimonials-section";
 import { StatsSection } from "@/components/home/stats-section";
 import { YouTubeSection } from "@/components/home/youtube-section";
-import { ChatWidgetSection } from "@/components/home/chat-widget-section";
+// import { ChatWidgetSection } from "@/components/home/chat-widget-section"; — hidden
 import { ScrollReset } from "@/components/ui/scroll-reset";
 import { AboutSummary } from "@/components/home/about-summary";
 
@@ -32,7 +32,7 @@ export default function HomePage() {
       <HeroSection />
       <AboutSummary />
       <StatsSection />
-      <ChatWidgetSection />
+      {/* <ChatWidgetSection /> — hidden */}
       <EventsSection />
       <BooksSection />
       <TestimonialsSection />

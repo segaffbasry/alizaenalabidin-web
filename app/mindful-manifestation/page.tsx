@@ -189,7 +189,7 @@ export default function MindfulManifestationPage() {
           }}
         >
           <span style={{ fontFamily: "Inter, sans-serif", fontWeight: 500, fontSize: 16, color: "rgb(84,79,71)", whiteSpace: "nowrap" }}>
-            1-3 May 2026
+            15-17 August 2026
           </span>
           <div style={{ flex: 1, height: 1, background: "rgba(84,79,71,0.3)" }} />
           <button
@@ -340,7 +340,7 @@ export default function MindfulManifestationPage() {
         {/* Meta */}
         <div style={{ display: "flex", flexDirection: "column", gap: 20, marginBottom: 48 }}>
           {[
-            { label: "DATE, TIME", value: "Friday–Sunday, 1–3 May 2026\n9am – 6pm" },
+            { label: "DATE, TIME", value: "Saturday–Monday, 15–17 August 2026\n9am – 6pm" },
             { label: "VENUE", value: "Plaza 51, Bintaro, Tangerang Selatan", link: "https://maps.app.goo.gl/6QMSGLj2MVkqV5um7", linkText: "Maps: https://maps.app.goo.gl/6QMSGLj2MVkqV5um7" },
           ].map(({ label, value, link, linkText }) => (
             <div key={label} className="flex flex-col sm:flex-row gap-1 sm:gap-0">
@@ -414,12 +414,13 @@ export default function MindfulManifestationPage() {
           style={{ background: "#f0f0f0", borderRadius: 20, padding: "clamp(24px,4vw,40px) clamp(20px,4vw,48px)", gap: "clamp(24px,5vw,64px)" }}
         >
           <div style={{ flex: 1 }}>
-            <p style={{ fontFamily: "Inter, sans-serif", fontWeight: 700, fontSize: 17, color: "#111", margin: "0 0 16px" }}>Currently at Normal Price</p>
-            <p style={{ fontFamily: "Inter, sans-serif", fontSize: 14, color: "rgb(80,80,80)", margin: "0 0 24px", lineHeight: 1.65 }}>Secure this price up until the next buy period, price valid until April 31st 2026</p>
+            <p style={{ fontFamily: "Inter, sans-serif", fontWeight: 700, fontSize: 17, color: "#111", margin: "0 0 16px" }}>Currently at Early Bird I Price</p>
+            <p style={{ fontFamily: "Inter, sans-serif", fontSize: 14, color: "rgb(80,80,80)", margin: "0 0 24px", lineHeight: 1.65 }}>Secure this price before it goes up, valid until June 30th 2026</p>
+            <p style={{ fontFamily: "Inter, sans-serif", fontSize: 13, fontWeight: 600, color: "rgb(160,160,160)", margin: "0 0 8px", letterSpacing: "0.04em", textTransform: "uppercase" }}>Upcoming prices</p>
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              {[{ label: "Early bird 1", note: "Until Feb 28th, IDR 7,7 mio" }, { label: "Early bird 2", note: "Until Mar 31st, IDR 8,8 mio" }].map(({ label, note }) => (
-                <p key={label} style={{ fontFamily: "Inter, sans-serif", fontSize: 14, color: "rgb(100,100,100)", margin: 0 }}>
-                  <strong style={{ color: "#333" }}>{label}</strong> <span style={{ textDecoration: "line-through" }}>{note}</span>
+              {[{ label: "Early Bird II", note: "Until Jul 31st, IDR 8,8 mio" }, { label: "Normal Price", note: "Until Aug 14th, IDR 9,9 mio" }].map(({ label, note }) => (
+                <p key={label} style={{ fontFamily: "Inter, sans-serif", fontSize: 14, color: "rgb(160,160,160)", margin: 0 }}>
+                  <strong style={{ color: "rgb(140,140,140)" }}>{label}</strong> <span>{note}</span>
                 </p>
               ))}
             </div>
@@ -427,10 +428,10 @@ export default function MindfulManifestationPage() {
 
           <div style={{ flex: 1, width: "100%" }}>
             <div style={{ display: "inline-block", background: "rgba(94,190,178,0.22)", borderRadius: 6, padding: "5px 14px", marginBottom: 14 }}>
-              <span style={{ fontFamily: "Inter, sans-serif", fontWeight: 600, fontSize: 12, color: "rgb(30,130,120)", letterSpacing: "0.1em" }}>PRICE CHANGE SOON</span>
+              <span style={{ fontFamily: "Inter, sans-serif", fontWeight: 600, fontSize: 12, color: "rgb(30,130,120)", letterSpacing: "0.1em" }}>EARLY BIRD I — ACTIVE NOW</span>
             </div>
-            <p style={{ fontFamily: "Inter, sans-serif", fontWeight: 800, fontSize: "clamp(32px,4vw,52px)", color: "#111", margin: "0 0 6px", lineHeight: 1.1 }}>IDR 9,9 Million</p>
-            <p style={{ fontFamily: "Inter, sans-serif", fontSize: 14, color: "rgb(120,120,120)", margin: "0 0 24px" }}>Until April 31st</p>
+            <p style={{ fontFamily: "Inter, sans-serif", fontWeight: 800, fontSize: "clamp(32px,4vw,52px)", color: "#111", margin: "0 0 6px", lineHeight: 1.1 }}>IDR 7,7 Million</p>
+            <p style={{ fontFamily: "Inter, sans-serif", fontSize: 14, color: "rgb(120,120,120)", margin: "0 0 24px" }}>Until June 30th 2026</p>
             <a href="https://forms.google.com" target="_blank" rel="noopener noreferrer"
               style={{ display: "block", textAlign: "center", padding: "16px 0", background: "rgb(56,40,30)", color: "#fff", fontFamily: "Inter, sans-serif", fontWeight: 700, fontSize: 15, letterSpacing: "0.08em", textDecoration: "none", borderRadius: 999 }}>
               BUY NOW
