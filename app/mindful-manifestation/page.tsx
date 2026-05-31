@@ -313,7 +313,7 @@ export default function MindfulManifestationPage() {
           What they <strong>SAY</strong>
         </motion.h2>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%,180px),1fr))", gap: 16, maxWidth: 1200, margin: "0 auto" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%,240px),1fr))", gap: 16, maxWidth: 1200, margin: "0 auto" }}>
           {VIDEOS.map(({ file, label }, i) => (
             <motion.div
               key={i} initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, ease, delay: i * 0.1 }}

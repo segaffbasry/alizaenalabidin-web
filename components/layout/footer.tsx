@@ -6,9 +6,9 @@ const NAV_LINKS = [
   { label: "About Ali", href: "/about" },
   { label: "Revisi Hidup", href: "/revisi-hidup" },
   { label: "Mindful Manifestation", href: "/mindful-manifestation" },
-  { label: "Products", href: "/products" },
-  { label: "Login", href: "/login" },
-  { label: "Chat With Ali", href: "/tanya" },
+  // { label: "Products", href: "/products" }, — hidden
+  // { label: "Login", href: "/login" }, — hidden (Membership)
+  // { label: "Chat With Ali", href: "/tanya" }, — hidden
 ];
 
 function InstagramIcon() {
