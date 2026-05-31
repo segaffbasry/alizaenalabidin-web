@@ -161,7 +161,7 @@ export default function MindfulManifestationPage() {
           </motion.p>
 
           <motion.a
-            href="https://forms.google.com"
+            href="https://forms.gle/6DgwS1rSKiphJ6F3A"
             target="_blank"
             rel="noopener noreferrer"
             initial={{ opacity: 0, y: 12 }}
@@ -223,7 +223,7 @@ export default function MindfulManifestationPage() {
           <div style={{ width: "100%", height: 1, background: "rgba(84,79,71,0.3)" }} />
           <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
             <span style={{ fontFamily: "Inter, sans-serif", fontWeight: 500, fontSize: 14, color: "rgb(84,79,71)" }}>
-              1-3 May 2026
+              15-17 August 2026
             </span>
             <button
               onClick={scrollToNext}
@@ -432,7 +432,7 @@ export default function MindfulManifestationPage() {
             </div>
             <p style={{ fontFamily: "Inter, sans-serif", fontWeight: 800, fontSize: "clamp(32px,4vw,52px)", color: "#111", margin: "0 0 6px", lineHeight: 1.1 }}>IDR 7,7 Million</p>
             <p style={{ fontFamily: "Inter, sans-serif", fontSize: 14, color: "rgb(120,120,120)", margin: "0 0 24px" }}>Until June 30th 2026</p>
-            <a href="https://forms.google.com" target="_blank" rel="noopener noreferrer"
+            <a href="https://forms.gle/6DgwS1rSKiphJ6F3A" target="_blank" rel="noopener noreferrer"
               style={{ display: "block", textAlign: "center", padding: "16px 0", background: "rgb(56,40,30)", color: "#fff", fontFamily: "Inter, sans-serif", fontWeight: 700, fontSize: 15, letterSpacing: "0.08em", textDecoration: "none", borderRadius: 999 }}>
               BUY NOW
             </a>
