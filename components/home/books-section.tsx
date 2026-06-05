@@ -7,7 +7,7 @@ import { useState } from "react";
 const BOOKS = [
   {
     id: "uncover-your-unique-purpose",
-    slug: "uncover-your-unique-purpose",
+    slug: "buku-uncover-your-unique-purpose-oleh-ali-zaenal-abidin",
     title: "Uncover your unique purpose",
     tag: "Newest release book by Ali Zaenal Abidin",
     spine: "#2E2820",
@@ -18,7 +18,7 @@ const BOOKS = [
   },
   {
     id: "hidup-mau-ngapain",
-    slug: "hidup-mau-ngapain",
+    slug: "buku-hidup-mau-ngapain-oleh-ali-zaenal-abidin",
     title: "Hidup mau ngapain?",
     tag: "A best-seller book by Ali Zaenal Abidin",
     spine: "#1A1A1A",

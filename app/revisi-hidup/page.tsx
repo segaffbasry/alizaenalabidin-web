@@ -221,7 +221,7 @@ export default function RevisiHidupPage() {
           </motion.p>
         </div>
 
-        {/* Bottom bar */}
+        {/* Bottom bar — date — line — scroll button — line — venue */}
         <div style={{
           position: "absolute", bottom: 0, left: 0, right: 0,
           display: "flex", alignItems: "center", padding: "0 clamp(16px, 4vw, 48px) clamp(20px, 3vw, 36px)", gap: 16, zIndex: 1,
@@ -230,13 +230,6 @@ export default function RevisiHidupPage() {
             9-12 April 2026
           </span>
           <div style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.35)" }} />
-          <span style={{ fontFamily: "Inter, sans-serif", fontWeight: 500, fontSize: 15, color: "rgba(255,255,255,0.75)", whiteSpace: "nowrap" }}>
-            Plaza 51, Bintaro
-          </span>
-        </div>
-
-        {/* Centered scroll button */}
-        <div style={{ position: "absolute", bottom: "clamp(72px, 10vw, 100px)", left: 0, right: 0, display: "flex", justifyContent: "center", zIndex: 1 }}>
           <button
             onClick={scrollToNext}
             aria-label="Scroll to next section"
@@ -248,6 +241,7 @@ export default function RevisiHidupPage() {
               display: "flex", alignItems: "center", justifyContent: "center",
               cursor: "pointer",
               position: "relative",
+              flexShrink: 0,
             }}
           >
             {/* Rotating dotted ring */}
@@ -271,6 +265,10 @@ export default function RevisiHidupPage() {
               <path d="M9 3v12M3 9l6 6 6-6" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </button>
+          <div style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.35)" }} />
+          <span style={{ fontFamily: "Inter, sans-serif", fontWeight: 500, fontSize: 15, color: "rgba(255,255,255,0.75)", whiteSpace: "nowrap" }}>
+            Plaza 51, Bintaro
+          </span>
         </div>
       </section>
 
@@ -899,7 +897,7 @@ export default function RevisiHidupPage() {
         </motion.h2>
 
         {/* Two cards */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 340px), 1fr))", gap: 16, alignItems: "stretch" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 340px), 1fr))", gap: 16, alignItems: "stretch" }}>
 
           {/* Left card */}
           <motion.div
@@ -940,7 +938,7 @@ export default function RevisiHidupPage() {
               background: "#fff",
               borderRadius: 16,
               padding: "36px 40px",
-              minWidth: 280, maxWidth: 380,
+              minWidth: 280,
               display: "flex",
               flexDirection: "column",
               justifyContent: "space-between",
