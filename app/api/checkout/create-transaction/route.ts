@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
       : "https://app.sandbox.midtrans.com/snap/v1/transactions";
 
     const orderId = `AZA-${Date.now()}`;
-    const SHIPPING_COST = 20000; // flat shipping fee in IDR
+    const SHIPPING_COST = 10000; // flat shipping fee in IDR
     const subtotal = Math.round(
       items.reduce((sum, item) => sum + (item.price) * item.quantity, 0)
     );
