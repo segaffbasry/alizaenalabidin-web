@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Script from "next/script";
 import { useCartStore, formatIDR } from "@/lib/store/cart-store";
+import { recordOrder } from "@/lib/medusa";
 
 declare global {
   interface Window {
@@ -89,8 +90,47 @@ export default function CheckoutPageClient() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? "Checkout gagal");
       setLoading(false);
+
+      // Snapshot the cart now — onSuccess fires after clearCart() elsewhere could run.
+      const orderItems = items.map((item) => ({
+        variant_id: item.variantId,
+        product_id: item.productId,
+        title: item.title,
+        variant_title: item.variantTitle,
+        thumbnail: item.thumbnail,
+        unit_price: item.price,
+        quantity: item.quantity,
+      }));
+
+      const track = async () => {
+        try {
+          await recordOrder({
+            midtrans_order_id: data.order_id,
+            items: orderItems,
+            customer: {
+              email: form.email,
+              first_name: form.firstName,
+              last_name: form.lastName,
+              phone: form.phone,
+            },
+            shipping_address: {
+              first_name: form.firstName,
+              last_name: form.lastName,
+              phone: form.phone,
+              address: form.address,
+              city: form.city,
+              postal_code: form.postalCode,
+              country_code: "ID",
+            },
+          });
+        } catch (e) {
+          // Payment already succeeded; order-tracking failure shouldn't block the customer.
+          console.error("Gagal mencatat pesanan ke Medusa:", e);
+        }
+      };
+
       window.snap.pay(data.snap_token, {
-        onSuccess: () => { clearCart(); window.location.href = "/checkout/success"; },
+        onSuccess: async () => { await track(); clearCart(); window.location.href = "/checkout/success"; },
         onPending: () => { clearCart(); window.location.href = "/checkout/pending"; },
         onError: () => { setError("Pembayaran gagal, silakan coba lagi."); },
         onClose: () => {},

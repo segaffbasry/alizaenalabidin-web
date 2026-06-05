@@ -126,3 +126,48 @@ export async function addToCart(cartId: string, variantId: string, quantity: num
     next: { revalidate: 0 },
   });
 }
+
+// ── Orders ─────────────────────────────────────────────────────────────────
+
+export interface RecordOrderInput {
+  midtrans_order_id: string;
+  shipping_cost?: number;
+  items: {
+    variant_id: string;
+    product_id?: string;
+    title: string;
+    variant_title?: string;
+    thumbnail?: string;
+    unit_price: number;
+    quantity: number;
+  }[];
+  customer?: {
+    email?: string;
+    first_name?: string;
+    last_name?: string;
+    phone?: string;
+  };
+  shipping_address?: {
+    first_name?: string;
+    last_name?: string;
+    phone?: string;
+    address?: string;
+    city?: string;
+    postal_code?: string;
+    country_code?: string;
+  };
+}
+
+/**
+ * Records a Midtrans-paid checkout as an order in Medusa. The backend
+ * re-verifies the payment with Midtrans before creating anything.
+ */
+export async function recordOrder(
+  input: RecordOrderInput
+): Promise<{ order_id: string; display_id?: number; duplicate?: boolean }> {
+  return medusaFetch("/record-order", {
+    method: "POST",
+    body: JSON.stringify(input),
+    next: { revalidate: 0 },
+  });
+}
