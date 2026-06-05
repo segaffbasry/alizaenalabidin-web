@@ -5,14 +5,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Minus, Plus } from "lucide-react";
-import { useCartStore } from "@/lib/store/cart-store";
+import { useCartStore, formatIDR } from "@/lib/store/cart-store";
 import { normalizeImageUrl } from "@/lib/medusa";
 
 const easeOut = (t: number) => 1 - Math.pow(2, -10 * t);
-
-function formatIDR(amount: number) {
-  return new Intl.NumberFormat("id-ID", { maximumFractionDigits: 0 }).format(amount / 100) + "Rp";
-}
 
 export function CartDrawer() {
   const { items, isOpen, closeCart, removeItem, updateQuantity, total, itemCount } = useCartStore();
@@ -134,7 +130,7 @@ export function CartDrawer() {
               <div className="flex items-center justify-between">
                 <span className="font-body text-sm text-[#111]">Subtotal</span>
                 <span className="font-body text-sm font-medium text-[#111]">
-                  {subtotal === 0 ? "0Rp" : formatIDR(subtotal)}
+                  {formatIDR(subtotal)}
                 </span>
               </div>
               <Link href="/checkout" onClick={closeCart}>

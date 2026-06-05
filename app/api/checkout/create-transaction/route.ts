@@ -40,21 +40,31 @@ export async function POST(req: NextRequest) {
       : "https://app.sandbox.midtrans.com/snap/v1/transactions";
 
     const orderId = `AZA-${Date.now()}`;
-    const grossAmount = Math.round(
+    const SHIPPING_COST = 20000; // flat shipping fee in IDR
+    const subtotal = Math.round(
       items.reduce((sum, item) => sum + (item.price) * item.quantity, 0)
     );
+    const grossAmount = subtotal + SHIPPING_COST;
 
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
     const payload: Record<string, unknown> = {
       transaction_details: { order_id: orderId, gross_amount: grossAmount },
       credit_card: { secure: true },
-      item_details: items.map((item) => ({
-        id: item.variantId,
-        price: Math.round(item.price),
-        quantity: item.quantity,
-        name: `${item.title} - ${item.variantTitle}`.slice(0, 50),
-      })),
+      item_details: [
+        ...items.map((item) => ({
+          id: item.variantId,
+          price: Math.round(item.price),
+          quantity: item.quantity,
+          name: `${item.title} - ${item.variantTitle}`.slice(0, 50),
+        })),
+        {
+          id: "SHIPPING",
+          price: SHIPPING_COST,
+          quantity: 1,
+          name: "Biaya Pengiriman",
+        },
+      ],
       currency: "IDR",
       callbacks: {
         finish: `${baseUrl}/checkout/success`,
