@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ShoppingCart, Minus, Plus } from "lucide-react";
 import { MedusaProduct, MedusaVariant, getVariantPrice, normalizeImageUrl } from "@/lib/medusa";
 import { useCartStore, formatIDR } from "@/lib/store/cart-store";
+import { variantRequiresShipping } from "@/lib/shipping";
 
 interface ProductDetailProps {
   product: MedusaProduct;
@@ -47,6 +48,7 @@ export default function ProductDetail({ product }: ProductDetailProps) {
         variantTitle: selectedVariant.title,
         price,
         thumbnail: normalizeImageUrl(product.thumbnail),
+        requiresShipping: variantRequiresShipping(product, selectedVariant),
       });
     }
     setAdded(true);

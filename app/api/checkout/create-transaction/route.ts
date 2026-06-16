@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { CartItem } from "@/lib/store/cart-store";
+import { cartShippingCost } from "@/lib/shipping";
 
 interface CustomerDetails {
   first_name?: string;
@@ -40,11 +41,13 @@ export async function POST(req: NextRequest) {
       : "https://app.sandbox.midtrans.com/snap/v1/transactions";
 
     const orderId = `AZA-${Date.now()}`;
-    const SHIPPING_COST = 10000; // flat shipping fee in IDR
+    // Shipping is charged only when the cart contains a physical item; digital
+    // products (audio, e-books, workshops, services) ship for free.
+    const shippingCost = cartShippingCost(items);
     const subtotal = Math.round(
       items.reduce((sum, item) => sum + (item.price) * item.quantity, 0)
     );
-    const grossAmount = subtotal + SHIPPING_COST;
+    const grossAmount = subtotal + shippingCost;
 
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
@@ -58,12 +61,9 @@ export async function POST(req: NextRequest) {
           quantity: item.quantity,
           name: `${item.title} - ${item.variantTitle}`.slice(0, 50),
         })),
-        {
-          id: "SHIPPING",
-          price: SHIPPING_COST,
-          quantity: 1,
-          name: "Biaya Pengiriman",
-        },
+        ...(shippingCost > 0
+          ? [{ id: "SHIPPING", price: shippingCost, quantity: 1, name: "Biaya Pengiriman" }]
+          : []),
       ],
       currency: "IDR",
       callbacks: {
