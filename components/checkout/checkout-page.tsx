@@ -56,8 +56,8 @@ export default function CheckoutPageClient() {
     setForm((f) => ({ ...f, [field]: e.target.value }));
 
   const handlePay = async () => {
-    if (!form.firstName || !form.email) {
-      setError("Nama depan dan email wajib diisi.");
+    if (!form.firstName || !form.email || !form.phone) {
+      setError("Nama depan, email, dan nomor telepon wajib diisi.");
       return;
     }
     if (!window.snap) {
@@ -203,7 +203,7 @@ export default function CheckoutPageClient() {
                     📧 Untuk produk digital, tiket/file akan dikirim ke email ini.
                   </p>
                 </div>
-                <Field label="Nomor Telepon" value={form.phone} onChange={set("phone")} placeholder="+62 812 3456 7890" type="tel" />
+                <Field label="Nomor Telepon *" value={form.phone} onChange={set("phone")} placeholder="+62 812 3456 7890" type="tel" />
               </div>
             </section>
 
