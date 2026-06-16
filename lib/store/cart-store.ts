@@ -12,6 +12,7 @@ export interface CartItem {
   price: number; // in IDR smallest unit (already * 100)
   quantity: number;
   thumbnail?: string;
+  requiresShipping?: boolean; // physical goods only; digital items ship free
 }
 
 interface CartState {

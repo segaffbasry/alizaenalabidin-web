@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Script from "next/script";
 import { useCartStore, formatIDR } from "@/lib/store/cart-store";
+import { cartShippingCost } from "@/lib/shipping";
 import { recordOrder } from "@/lib/medusa";
 
 declare global {
@@ -48,13 +49,15 @@ export default function CheckoutPageClient() {
 
   const subtotal = total();
   const count = itemCount();
+  const shipping = cartShippingCost(items);
+  const grandTotal = subtotal + shipping;
 
   const set = (field: keyof CustomerForm) => (e: React.ChangeEvent<HTMLInputElement>) =>
     setForm((f) => ({ ...f, [field]: e.target.value }));
 
   const handlePay = async () => {
-    if (!form.firstName || !form.email) {
-      setError("Nama depan dan email wajib diisi.");
+    if (!form.firstName || !form.email || !form.phone) {
+      setError("Nama depan, email, dan nomor telepon wajib diisi.");
       return;
     }
     if (!window.snap) {
@@ -106,6 +109,7 @@ export default function CheckoutPageClient() {
         try {
           await recordOrder({
             midtrans_order_id: data.order_id,
+            shipping_cost: shipping,
             items: orderItems,
             customer: {
               email: form.email,
@@ -199,7 +203,7 @@ export default function CheckoutPageClient() {
                     📧 Untuk produk digital, tiket/file akan dikirim ke email ini.
                   </p>
                 </div>
-                <Field label="Nomor Telepon" value={form.phone} onChange={set("phone")} placeholder="+62 812 3456 7890" type="tel" />
+                <Field label="Nomor Telepon *" value={form.phone} onChange={set("phone")} placeholder="+62 812 3456 7890" type="tel" />
               </div>
             </section>
 
@@ -260,13 +264,13 @@ export default function CheckoutPageClient() {
                 </div>
                 <div className="flex justify-between" style={{ fontFamily: "Inter, sans-serif", fontSize: 14, color: "#6B6560" }}>
                   <span>Pengiriman</span>
-                  <span>Dihitung saat pembayaran</span>
+                  <span>{shipping > 0 ? formatIDR(shipping) : "Gratis"}</span>
                 </div>
               </div>
 
               <div className="flex justify-between mb-6" style={{ fontFamily: "Inter, sans-serif", fontSize: 18, fontWeight: 700, color: "#262626" }}>
                 <span>Total</span>
-                <span style={{ color: "#724233" }}>{formatIDR(subtotal)}</span>
+                <span style={{ color: "#724233" }}>{formatIDR(grandTotal)}</span>
               </div>
 
               {error && (

@@ -6,6 +6,7 @@ import { useState } from "react";
 import { ShoppingCart } from "lucide-react";
 import { MedusaProduct, getVariantPrice, normalizeImageUrl } from "@/lib/medusa";
 import { formatIDR, useCartStore } from "@/lib/store/cart-store";
+import { variantRequiresShipping } from "@/lib/shipping";
 
 interface ProductsGridProps {
   products: MedusaProduct[];
@@ -62,6 +63,7 @@ function ProductCard({ product }: { product: MedusaProduct; index: number }) {
       variantTitle: firstVariant.title,
       price: getVariantPrice(firstVariant),
       thumbnail: normalizeImageUrl(product.thumbnail) ?? undefined,
+      requiresShipping: variantRequiresShipping(product, firstVariant),
     });
     openCart();
   };
