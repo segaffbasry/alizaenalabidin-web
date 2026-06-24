@@ -8,51 +8,28 @@ const ease = (t: number) => 1 - Math.pow(2, -10 * t);
 
 /* ─── data ─────────────────────────────────────────────────── */
 
-const SPEAKERS = [
-  {
-    name: "Sandiaga Uno",
-    label: "SANDIAGA UNO",
-    role: "Entrepreneur & Menteri Pariwisata dan Ekonomi Kreatif (2020–2024)",
-    img: "/images/sandiaga.avif",
-  },
-  {
-    name: "Adji Santosoputro",
-    label: "ADJI SANTOSOPUTRO",
-    role: "Mindfulness Practitioner",
-    img: "/images/adji.avif",
-  },
-  {
-    name: "Meilinda Sutanto",
-    label: "MEILINDA SUTANTO",
-    role: "Family & Systemic Constellation Therapist. Bestseller Author.",
-    img: "/images/meilinda.avif",
-  },
-  {
-    name: "Ali Zaenal Abidin",
-    label: "ALI ZAENAL ABIDIN\n(Facilitator)",
-    role: "Life Purpose & Wellbeing Facilitator",
-    img: "/images/ali-about.avif",
-  },
+/* Past Revisi Hidup speakers — studio photos from the "Foto Pembicara" set
+   (originals named 1–32; 1 is the AZA logo and is omitted here). Sandiaga Uno,
+   Adji Santosoputro, and Meilinda Sutanto are part of this set. */
+const PAST_SPEAKERS: { img: string; name?: string; role?: string }[] =
+  Array.from({ length: 31 }, (_, i) => ({ img: `/images/past-speakers/${i + 2}.png` }));
+
+/* The four speakers shown in the grid before the full list is opened. */
+const FEATURED_SPEAKERS: { img: string; name?: string }[] = [
+  { img: "/images/past-speakers/2.png", name: "Sandiaga Uno" },
+  { img: "/images/past-speakers/3.png", name: "Raditya Dika" },
+  { img: "/images/past-speakers/4.png", name: "Fitra Eri" },
+  { img: "/images/past-speakers/22.png", name: "Andien" },
 ];
 
-
-/* Past Revisi Hidup guest speakers. Add { img, name?, role? } entries here as
-   more speaker photos/details become available. */
-const PAST_SPEAKERS: { img: string; name?: string; role?: string }[] = [
-  { img: "/images/guestpast1revpage.avif" },
-  { img: "/images/guestpast2revpage.avif" },
-  { img: "/images/guestpast3revpage.avif" },
-  { img: "/images/guestpast4revpage.avif" },
-];
-
-const FAQS = [
+const FAQS: { q: string; a: string; steps?: string[] }[] = [
   {
     q: "Apa agenda kegiatan dalam workshop Revisi Hidup?",
     a: "Seperti yang disebutkan dalam \"YOUR JOURNEY\", dalam workshop Revisi Hidup kita akan menjawab pertanyaan \"Who am I?\" \"Where am I?\" \"Where to go?\" \"How to go?\" dan \"I'm On My Way\", dengan difasilitasi oleh Ali Zaenal Abidin. Di sini kita tidak hanya mendengarkan materi tetapi juga mempraktekkan langsung materinya. Selain itu, akan ada sesi dengan para pembicara tamu lainnya.",
   },
   {
     q: "Kapan workshop Revisi Hidup dilaksanakan?",
-    a: "Workshop Revisi Hidup dilaksanakan pada hari Kamis - Minggu, tanggal 20-23 Oktober 2025, jam 09.00 - 21.00 WIB.",
+    a: "Workshop Revisi Hidup dilaksanakan pada hari Kamis - Minggu, tanggal 23-26 Juli 2026, jam 09.00 - 21.00 WIB.",
   },
   {
     q: "Di mana workshop Revisi Hidup dilaksanakan?",
@@ -71,12 +48,18 @@ const FAQS = [
     a: "Iya, peserta akan mendapatkan makan selama workshop berlangsung dari pagi hingga malam, sehingga bisa tetap fokus mengikuti workshop. Peserta dianjurkan untuk membawa botol minum sendiri untuk mengurangi sampah botol minum.",
   },
   {
-    q: "Apakah benar peserta akan mendapatkan uang senilai Rp400.000 dengan mengikuti workshop Revisi Hidup?",
-    a: "Benar, peserta akan mendapatkan Bonus Partisipasi berupa uang cash senilai Rp400.000 dengan mengikuti workshop Revisi Hidup secara penuh selama 4 hari.",
+    q: "Apakah benar peserta akan mendapatkan uang senilai Rp200.000 dengan mengikuti workshop Revisi Hidup?",
+    a: "Benar, peserta akan mendapatkan Bonus Partisipasi berupa uang cash senilai Rp200.000 dengan mengikuti workshop Revisi Hidup secara penuh selama 4 hari.",
   },
   {
     q: "Bagaimana cara mendaftar workshop Revisi Hidup?",
-    a: "Cara mendaftar workshop Revisi Hidup dengan mengikuti langkah berikut: 1. Mengisi formulir pendaftaran  2. Follow akun Instagram @revisi.hidup @youtzmedia dan @alizaenalabidin  3. Share info tentang workshop Revisi Hidup di Instagram Story dan mention akun Instagram @revisi.hidup @youtzmedia dan @alizaenalabidin  4. Upload bukti share info pada formulir pendaftaran",
+    a: "Cara mendaftar workshop Revisi Hidup dengan mengikuti langkah berikut:",
+    steps: [
+      "Mengisi formulir pendaftaran",
+      "Follow akun Instagram @revisi.hidup @youtzmedia dan @alizaenalabidin",
+      "Share info tentang workshop Revisi Hidup di Instagram Story dan mention akun Instagram @revisi.hidup @youtzmedia dan @alizaenalabidin",
+      "Upload bukti share info pada formulir pendaftaran",
+    ],
   },
   {
     q: "Apakah perlu membayar untuk mendaftar workshop Revisi Hidup?",
@@ -92,13 +75,13 @@ const FAQS = [
   },
   {
     q: "Kapan batas akhir pendaftaran peserta?",
-    a: "Pendaftaran peserta ditutup pada Sabtu, 8 November 2025.",
+    a: "Pendaftaran peserta ditutup pada Rabu, 15 Juli 2026.",
   },
 ];
 
 /* ─── components ────────────────────────────────────────────── */
 
-function FaqItem({ q, a }: { q: string; a: string }) {
+function FaqItem({ q, a, steps }: { q: string; a: string; steps?: string[] }) {
   const [open, setOpen] = useState(false);
   return (
     <div style={{
@@ -139,9 +122,18 @@ function FaqItem({ q, a }: { q: string; a: string }) {
             transition={{ duration: 0.28, ease: "easeOut" }}
             style={{ overflow: "hidden" }}
           >
-            <p style={{ fontFamily: "Inter, sans-serif", fontSize: 15, color: "#444", lineHeight: 1.7, padding: "0 24px 20px" }}>
-              {a}
-            </p>
+            <div style={{ padding: "0 24px 20px" }}>
+              <p style={{ fontFamily: "Inter, sans-serif", fontSize: 15, color: "#444", lineHeight: 1.7, margin: 0 }}>
+                {a}
+              </p>
+              {steps && (
+                <ol style={{ fontFamily: "Inter, sans-serif", fontSize: 15, color: "#444", lineHeight: 1.7, margin: "10px 0 0", paddingLeft: 22 }}>
+                  {steps.map((step, i) => (
+                    <li key={i} style={{ marginBottom: 6 }}>{step}</li>
+                  ))}
+                </ol>
+              )}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -227,7 +219,7 @@ export default function RevisiHidupPage() {
           display: "flex", alignItems: "center", padding: "0 clamp(16px, 4vw, 48px) clamp(20px, 3vw, 36px)", gap: 16, zIndex: 1,
         }}>
           <span style={{ fontFamily: "Inter, sans-serif", fontWeight: 500, fontSize: 15, color: "rgba(255,255,255,0.75)", whiteSpace: "nowrap" }}>
-            9-12 April 2026
+            23-26 Juli 2026
           </span>
           <div style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.35)" }} />
           <button
@@ -272,91 +264,10 @@ export default function RevisiHidupPage() {
         </div>
       </section>
 
-      {/* ══ SPEAKERS ══════════════════════════════════════════ */}
-      <section ref={nextSectionRef} style={{
-        background: "linear-gradient(180deg, #FF2727 0%, #FF4C57 50%, #FF2727 100%)",
-        padding: "clamp(40px, 6vw, 80px) clamp(20px, 6vw, 80px) clamp(50px, 8vw, 100px)",
-      }}>
-        {/* Label */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 24 }}
-        >
-          <div style={{ width: 28, height: 2, background: "#fff", borderRadius: 2 }} />
-          <span style={{
-            fontFamily: "var(--font-inter-display), Inter, sans-serif",
-            fontWeight: 400, fontSize: 16, lineHeight: "22px", color: "#fff",
-          }}>
-            Speakers
-          </span>
-        </motion.div>
-
-        {/* Heading */}
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.05 }}
-          style={{
-            fontFamily: "var(--font-inter-display), Inter, sans-serif",
-            fontWeight: 400, fontSize: "clamp(22px, 5vw, 60px)", lineHeight: 1.2, letterSpacing: "-0.01em",
-            color: "#fff", margin: "0 0 56px",
-          }}
-        >
-          Pembicara di Revisi Hidup kali ini
-        </motion.h2>
-
-        {/* Cards grid */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 220px), 1fr))", gap: 24 }}>
-          {SPEAKERS.map(({ name, label, role, img }, i) => (
-            <motion.div
-              key={name}
-              initial={{ opacity: 0, y: 28 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, ease, delay: i * 0.1 }}
-            >
-              {/* Photo card */}
-              <div style={{
-                background: "#fff",
-                borderRadius: 16,
-                overflow: "hidden",
-                aspectRatio: "3 / 3.6",
-                marginBottom: 20,
-              }}>
-                <img
-                  src={img}
-                  alt={name}
-                  style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center" }}
-                />
-              </div>
-
-              {/* Name */}
-              <p style={{
-                fontFamily: "Inter, sans-serif",
-                fontWeight: 600, fontSize: "clamp(16px, 2.5vw, 24px)", lineHeight: "34px",
-                color: "rgb(255,255,255)", margin: "0 0 4px", whiteSpace: "pre-line",
-              }}>
-                {label}
-              </p>
-
-              {/* Role */}
-              <p style={{
-                fontFamily: "Inter, sans-serif",
-                fontWeight: 400, fontSize: 16, lineHeight: "24px",
-                color: "rgba(255,255,255,0.55)", margin: 0,
-              }}>
-                {role}
-              </p>
-            </motion.div>
-          ))}
-        </div>
-      </section>
+      {/* ══ SPEAKERS (current batch) — hidden for this batch ══ */}
 
       {/* ══ TENTANG REVISI HIDUP ══════════════════════════════ */}
-      <section style={{ background: "#FF2727", padding: "clamp(40px, 6vw, 80px) clamp(20px, 6vw, 80px) clamp(50px, 8vw, 100px)" }}>
+      <section ref={nextSectionRef} style={{ background: "#FF2727", padding: "clamp(40px, 6vw, 80px) clamp(20px, 6vw, 80px) clamp(50px, 8vw, 100px)" }}>
         {/* Label */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
@@ -454,7 +365,7 @@ export default function RevisiHidupPage() {
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
           {[
             { num: "01", text: "Workshop selama 4 hari full = GRATIS" },
-            { num: "02", text: "BONUS partisipasi Rp400.000 cash untuk tiap peserta" },
+            { num: "02", text: "BONUS partisipasi Rp200.000 cash untuk tiap peserta" },
             { num: "03", text: "GRATIS makan dan minum sepanjang acara" },
           ].map(({ num, text }, i) => (
             <motion.div
@@ -610,7 +521,7 @@ export default function RevisiHidupPage() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, ease, delay: i * 0.04 }}
               >
-                <FaqItem q={faq.q} a={faq.a} />
+                <FaqItem q={faq.q} a={faq.a} steps={faq.steps} />
               </motion.div>
             ))}
           </div>
@@ -632,6 +543,25 @@ export default function RevisiHidupPage() {
             Testimoni
           </span>
         </motion.div>
+
+        {/* Link to the full testimony video folder */}
+        <motion.p
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          style={{ fontFamily: "Inter, sans-serif", fontWeight: 400, fontSize: 16, lineHeight: 1.6, color: "rgba(255,255,255,0.85)", margin: "0 0 32px", maxWidth: 560 }}
+        >
+          Video testimoni peserta selengkapnya bisa diakses{" "}
+          <a
+            href="https://drive.google.com/drive/folders/1xbkUq1Z5D4I0UrzoVdmZkdwRKZh-SqdL?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "#fff", fontWeight: 600, textDecoration: "underline", textUnderlineOffset: 3 }}
+          >
+            di sini
+          </a>
+          .
+        </motion.p>
 
         {/* 3-column: video · video · youtz */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 280px), 1fr))", gap: 24, alignItems: "center" }}>
@@ -685,12 +615,6 @@ export default function RevisiHidupPage() {
               alt="Youtz Media"
               style={{ width: 120, height: 120, objectFit: "contain" }}
             />
-            <p style={{
-              fontFamily: "Inter, sans-serif", fontWeight: 600, fontSize: 16,
-              color: "#fff", margin: 0,
-            }}>
-              Youtz Media
-            </p>
           </motion.div>
 
         </div>
@@ -767,7 +691,7 @@ export default function RevisiHidupPage() {
             onClick={() => setSpeakersOpen(true)}
             style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, cursor: "pointer" }}
           >
-            {PAST_SPEAKERS.map(({ img: src }, i) => (
+            {FEATURED_SPEAKERS.map(({ img: src }, i) => (
               <motion.div
                 key={src}
                 initial={{ opacity: 0, y: 24 }}
@@ -967,7 +891,7 @@ export default function RevisiHidupPage() {
             </div>
 
             <motion.a
-              href="https://forms.google.com"
+              href="https://forms.gle/WHJrBZQcVUWhunKx5"
               target="_blank"
               rel="noopener noreferrer"
               whileHover={{ scale: 1.03 }}

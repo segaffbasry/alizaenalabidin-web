@@ -17,11 +17,11 @@ const EVENTS = [
   {
     id: "revisi-hidup",
     title: "Revisi Hidup",
-    date: "9-12 April 2026",
+    date: "23-26 Juli 2026",
     venue: "Plaza 51, Bintaro",
     description:
       "A 4-day guided workshop designed to help you pause, review your life direction, and make intentional adjustments with clarity and awareness.",
-    image: "/images/poster-revisi.png",
+    image: "/images/poster-revisi-juli-2026.png",
     href: "/revisi-hidup",
     imageRight: true,
   },
