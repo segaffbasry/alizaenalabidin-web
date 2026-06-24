@@ -544,25 +544,6 @@ export default function RevisiHidupPage() {
           </span>
         </motion.div>
 
-        {/* Link to the full testimony video folder */}
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          style={{ fontFamily: "Inter, sans-serif", fontWeight: 400, fontSize: 16, lineHeight: 1.6, color: "rgba(255,255,255,0.85)", margin: "0 0 32px", maxWidth: 560 }}
-        >
-          Video testimoni peserta selengkapnya bisa diakses{" "}
-          <a
-            href="https://drive.google.com/drive/folders/1xbkUq1Z5D4I0UrzoVdmZkdwRKZh-SqdL?usp=sharing"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ color: "#fff", fontWeight: 600, textDecoration: "underline", textUnderlineOffset: 3 }}
-          >
-            di sini
-          </a>
-          .
-        </motion.p>
-
         {/* 3-column: video · video · youtz */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 280px), 1fr))", gap: 24, alignItems: "center" }}>
 
@@ -575,7 +556,7 @@ export default function RevisiHidupPage() {
             style={{ borderRadius: 16, overflow: "hidden", aspectRatio: "9 / 16", background: "#000" }}
           >
             <video
-              src="/videos/testimoni1.mp4"
+              src="/videos/testimoni-meikurnia.mp4"
               controls
               style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
             />
@@ -590,7 +571,7 @@ export default function RevisiHidupPage() {
             style={{ borderRadius: 16, overflow: "hidden", aspectRatio: "9 / 16", background: "#000" }}
           >
             <video
-              src="/videos/testimoni2.mp4"
+              src="/videos/testimoni-rumi.mp4"
               controls
               style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
             />
