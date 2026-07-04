@@ -8,6 +8,15 @@ const ease = (t: number) => 1 - Math.pow(2, -10 * t);
 
 /* ─── data ─────────────────────────────────────────────────── */
 
+/* Guest speakers for the current batch, shown in the SPEAKERS section.
+   Ali always closes the list as facilitator. */
+const SPEAKERS = [
+  { name: "Speaker 1", label: "", role: "", img: "/images/speakers/1.jpg" },
+  { name: "Speaker 2", label: "", role: "", img: "/images/speakers/2.jpg" },
+  { name: "Speaker 3", label: "", role: "", img: "/images/speakers/3.jpg" },
+  { name: "Ali Zaenal Abidin", label: "", role: "", img: "/images/ali-about.avif", contain: true },
+];
+
 /* Past Revisi Hidup speakers — studio photos from the "Foto Pembicara" set
    (originals named 1–32; 1 is the AZA logo and is omitted here). Sandiaga Uno,
    Adji Santosoputro, and Meilinda Sutanto are part of this set. */
@@ -264,10 +273,98 @@ export default function RevisiHidupPage() {
         </div>
       </section>
 
-      {/* ══ SPEAKERS (current batch) — hidden for this batch ══ */}
+      {/* ══ SPEAKERS ══════════════════════════════════════════ */}
+      <section ref={nextSectionRef} style={{
+        background: "linear-gradient(180deg, #FF2727 0%, #FF4C57 50%, #FF2727 100%)",
+        padding: "clamp(40px, 6vw, 80px) clamp(20px, 6vw, 80px) clamp(50px, 8vw, 100px)",
+      }}>
+        {/* Label */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 24 }}
+        >
+          <div style={{ width: 28, height: 2, background: "#fff", borderRadius: 2 }} />
+          <span style={{
+            fontFamily: "var(--font-inter-display), Inter, sans-serif",
+            fontWeight: 400, fontSize: 16, lineHeight: "22px", color: "#fff",
+          }}>
+            Speakers
+          </span>
+        </motion.div>
+
+        {/* Heading */}
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.05 }}
+          style={{
+            fontFamily: "var(--font-inter-display), Inter, sans-serif",
+            fontWeight: 400, fontSize: "clamp(22px, 5vw, 60px)", lineHeight: 1.2, letterSpacing: "-0.01em",
+            color: "#fff", margin: "0 0 56px",
+          }}
+        >
+          Pembicara di Revisi Hidup kali ini
+        </motion.h2>
+
+        {/* Cards grid */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 260px), 1fr))", gap: 24 }}>
+          {SPEAKERS.map(({ name, label, role, img, contain }, i) => (
+            <motion.div
+              key={name}
+              initial={{ opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, ease, delay: i * 0.1 }}
+            >
+              {/* Photo card */}
+              <div style={{
+                background: "#fff",
+                borderRadius: 16,
+                overflow: "hidden",
+                aspectRatio: "3 / 3.6",
+                marginBottom: 20,
+              }}>
+                <img
+                  src={img}
+                  alt={name}
+                  style={{
+                    width: "100%", height: "100%",
+                    objectFit: contain ? "contain" : "cover",
+                    objectPosition: contain ? "bottom center" : "top center",
+                    padding: contain ? "0 4% 40px" : 0,
+                    transform: contain ? "scale(1.045)" : undefined,
+                    transformOrigin: "center bottom",
+                  }}
+                />
+              </div>
+
+              {/* Name */}
+              <p style={{
+                fontFamily: "Inter, sans-serif",
+                fontWeight: 600, fontSize: "clamp(16px, 2.5vw, 24px)", lineHeight: "34px",
+                color: "rgb(255,255,255)", margin: "0 0 4px", whiteSpace: "pre-line",
+              }}>
+                {label}
+              </p>
+
+              {/* Role */}
+              <p style={{
+                fontFamily: "Inter, sans-serif",
+                fontWeight: 400, fontSize: 16, lineHeight: "24px",
+                color: "rgba(255,255,255,0.55)", margin: 0,
+              }}>
+                {role}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+      </section>
 
       {/* ══ TENTANG REVISI HIDUP ══════════════════════════════ */}
-      <section ref={nextSectionRef} style={{ background: "#FF2727", padding: "clamp(40px, 6vw, 80px) clamp(20px, 6vw, 80px) clamp(50px, 8vw, 100px)" }}>
+      <section style={{ background: "#FF2727", padding: "clamp(40px, 6vw, 80px) clamp(20px, 6vw, 80px) clamp(50px, 8vw, 100px)" }}>
         {/* Label */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
