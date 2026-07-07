@@ -11,8 +11,8 @@ const ease = (t: number) => 1 - Math.pow(2, -10 * t);
 /* Guest speakers for the current batch, shown in the SPEAKERS section.
    Ali always closes the list as facilitator. */
 const SPEAKERS = [
-  { name: "Ramon Y. Tungka", label: "Ramon Y. Tungka", role: "Aktor & Pegiat Lingkungan", img: "/images/speakers/1.jpg" },
-  { name: "Vikra Ijas", label: "Vikra Ijas", role: "CEO & Co-Founder Kitabisa.com", img: "/images/speakers/2.jpg" },
+  { name: "Vikra Ijas", label: "Vikra Ijas", role: "CEO & Co-Founder Kitabisa.com", img: "/images/speakers/1.jpg" },
+  { name: "Ramon Y. Tungka", label: "Ramon Y. Tungka", role: "Aktor & Pegiat Lingkungan", img: "/images/speakers/2.jpg" },
   { name: "Atika Cahya", label: "Atika Cahya", role: "Mental Health Activist & Content Creator", img: "/images/speakers/3.jpg" },
   { name: "Ali Zaenal Abidin", label: "Ali Zaenal Abidin", role: "Life Purpose & Wellbeing Facilitator", img: "/images/ali-about.avif", contain: true },
 ];
