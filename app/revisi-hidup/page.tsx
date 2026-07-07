@@ -343,7 +343,7 @@ export default function RevisiHidupPage() {
 
               {/* Name */}
               <p style={{
-                fontFamily: "Inter, sans-serif",
+                fontFamily: "var(--font-inter-display), Inter, sans-serif",
                 fontWeight: 600, fontSize: "clamp(16px, 2.5vw, 24px)", lineHeight: "34px",
                 color: "rgb(255,255,255)", margin: "0 0 4px", whiteSpace: "pre-line",
               }}>
