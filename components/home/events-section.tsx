@@ -88,7 +88,7 @@ export function EventsSection() {
             >
               {/* Poster image */}
               <div
-                style={{ flexShrink: 0, width: "100%", borderRadius: "10px 10px 0 0", overflow: "hidden", aspectRatio: "3 / 2" }}
+                style={{ flexShrink: 0, width: "100%", borderRadius: "10px 10px 0 0", overflow: "hidden", aspectRatio: "4 / 5" }}
                 className="sm:!w-[220px] lg:!w-[285px] sm:!aspect-auto sm:!h-[360px] sm:!rounded-[12px_0_0_12px]"
               >
                 <img
