@@ -11,10 +11,10 @@ const ease = (t: number) => 1 - Math.pow(2, -10 * t);
 /* Guest speakers for the current batch, shown in the SPEAKERS section.
    Ali always closes the list as facilitator. */
 const SPEAKERS = [
-  { name: "Speaker 1", label: "", role: "", img: "/images/speakers/1.jpg" },
-  { name: "Speaker 2", label: "", role: "", img: "/images/speakers/2.jpg" },
-  { name: "Speaker 3", label: "", role: "", img: "/images/speakers/3.jpg" },
-  { name: "Ali Zaenal Abidin", label: "", role: "", img: "/images/ali-about.avif", contain: true },
+  { name: "Ramon Y. Tungka", label: "Ramon Y. Tungka", role: "Aktor & Pegiat Lingkungan", img: "/images/speakers/1.jpg" },
+  { name: "Vikra Ijas", label: "Vikra Ijas", role: "CEO & Co-Founder Kitabisa.com", img: "/images/speakers/2.jpg" },
+  { name: "Atika Cahya", label: "Atika Cahya", role: "Mental Health Activist & Content Creator", img: "/images/speakers/3.jpg" },
+  { name: "Ali Zaenal Abidin", label: "Ali Zaenal Abidin", role: "Life Purpose & Wellbeing Facilitator", img: "/images/ali-about.avif", contain: true },
 ];
 
 /* Past Revisi Hidup speakers — studio photos from the "Foto Pembicara" set
