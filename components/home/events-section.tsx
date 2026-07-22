@@ -21,7 +21,7 @@ const EVENTS = [
     venue: "Plaza 51, Bintaro",
     description:
       "A 4-day guided workshop designed to help you pause, review your life direction, and make intentional adjustments with clarity and awareness.",
-    image: "/images/festival-bale-nagi-2023.png",
+    image: "/images/poster-revisi-juli-2026.png",
     href: "/revisi-hidup",
     imageRight: true,
   },
