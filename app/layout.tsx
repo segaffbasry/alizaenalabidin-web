@@ -141,8 +141,8 @@ const upcomingEventJsonLd = [
     "@context": "https://schema.org",
     "@type": "Event",
     name: "Mindful Manifestation Workshop",
-    startDate: "2026-05-01",
-    endDate: "2026-05-03",
+    startDate: "2026-12-11",
+    endDate: "2026-12-13",
     eventStatus: "https://schema.org/EventScheduled",
     eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
     location: {

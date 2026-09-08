@@ -6,11 +6,11 @@ const EVENTS = [
   {
     id: "mindful-manifestation",
     title: "Mindful Manifestation",
-    date: "15-17 August 2026",
+    date: "11-13 December 2026",
     venue: "Plaza 51, Bintaro",
     description:
       "A 3-day guided mindfulness workshop designed to help you reconnect, refocus, and consciously shape your inner direction through intentional practice.",
-    image: "/images/poster_mindful_new.jpeg",
+    image: "/images/poster-mindful-december-2026.png",
     href: "/mindful-manifestation",
     imageRight: false,
   },
