@@ -9,11 +9,10 @@ const ease = (t: number) => 1 - Math.pow(2, -10 * t);
 /* ─── data ─────────────────────────────────────────────────── */
 
 /* Guest speakers for the current batch, shown in the SPEAKERS section.
-   Ali always closes the list as facilitator. */
+   Ali always closes the list as facilitator. The section is hidden while
+   SHOW_CURRENT_SPEAKERS is false (batch speakers not announced yet). */
+const SHOW_CURRENT_SPEAKERS = false;
 const SPEAKERS = [
-  { name: "Vikra Ijas", label: "Vikra Ijas", role: "CEO & Co-Founder Kitabisa.com", img: "/images/speakers/1.jpg" },
-  { name: "Ramon Y. Tungka", label: "Ramon Y. Tungka", role: "Aktor & Pegiat Lingkungan", img: "/images/speakers/2.jpg" },
-  { name: "Atika Cahya", label: "Atika Cahya", role: "Mental Health Activist & Content Creator", img: "/images/speakers/3.jpg" },
   { name: "Ali Zaenal Abidin", label: "Ali Zaenal Abidin", role: "Life Purpose & Wellbeing Facilitator", img: "/images/ali-about.avif", contain: true },
 ];
 
@@ -21,7 +20,12 @@ const SPEAKERS = [
    (originals named 1–32; 1 is the AZA logo and is omitted here). Sandiaga Uno,
    Adji Santosoputro, and Meilinda Sutanto are part of this set. */
 const PAST_SPEAKERS: { img: string; name?: string; role?: string }[] =
-  Array.from({ length: 31 }, (_, i) => ({ img: `/images/past-speakers/${i + 2}.png` }));
+  [
+    ...Array.from({ length: 31 }, (_, i) => ({ img: `/images/past-speakers/${i + 2}.png` })),
+    { img: "/images/past-speakers/vikra-ijas.jpg" },
+    { img: "/images/past-speakers/ramon-y-tungka.jpg" },
+    { img: "/images/past-speakers/atika-cahya.jpg" },
+  ];
 
 /* The four speakers shown in the grid before the full list is opened. */
 const FEATURED_SPEAKERS: { img: string; name?: string }[] = [
@@ -38,7 +42,7 @@ const FAQS: { q: string; a: string; steps?: string[] }[] = [
   },
   {
     q: "Kapan workshop Revisi Hidup dilaksanakan?",
-    a: "Workshop Revisi Hidup dilaksanakan pada hari Kamis - Minggu, tanggal 23-26 Juli 2026, jam 09.00 - 21.00 WIB.",
+    a: "Workshop Revisi Hidup dilaksanakan pada hari Kamis - Minggu, tanggal 12-15 November 2026, jam 09.00 - 21.00 WIB.",
   },
   {
     q: "Di mana workshop Revisi Hidup dilaksanakan?",
@@ -84,7 +88,7 @@ const FAQS: { q: string; a: string; steps?: string[] }[] = [
   },
   {
     q: "Kapan batas akhir pendaftaran peserta?",
-    a: "Pendaftaran peserta ditutup pada Rabu, 15 Juli 2026.",
+    a: "Pendaftaran peserta ditutup pada Rabu, 4 November 2026.",
   },
 ];
 
@@ -228,7 +232,7 @@ export default function RevisiHidupPage() {
           display: "flex", alignItems: "center", padding: "0 clamp(16px, 4vw, 48px) clamp(20px, 3vw, 36px)", gap: 16, zIndex: 1,
         }}>
           <span style={{ fontFamily: "Inter, sans-serif", fontWeight: 500, fontSize: 15, color: "rgba(255,255,255,0.75)", whiteSpace: "nowrap" }}>
-            23-26 Juli 2026
+            12-15 November 2026
           </span>
           <div style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.35)" }} />
           <button
@@ -273,8 +277,10 @@ export default function RevisiHidupPage() {
         </div>
       </section>
 
+      {SHOW_CURRENT_SPEAKERS && (
+      <>
       {/* ══ SPEAKERS ══════════════════════════════════════════ */}
-      <section ref={nextSectionRef} style={{
+      <section style={{
         background: "linear-gradient(180deg, #FF2727 0%, #FF4C57 50%, #FF2727 100%)",
         padding: "clamp(40px, 6vw, 80px) clamp(20px, 6vw, 80px) clamp(50px, 8vw, 100px)",
       }}>
@@ -362,9 +368,11 @@ export default function RevisiHidupPage() {
           ))}
         </div>
       </section>
+      </>
+      )}
 
       {/* ══ TENTANG REVISI HIDUP ══════════════════════════════ */}
-      <section style={{ background: "#FF2727", padding: "clamp(40px, 6vw, 80px) clamp(20px, 6vw, 80px) clamp(50px, 8vw, 100px)" }}>
+      <section ref={nextSectionRef} style={{ background: "#FF2727", padding: "clamp(40px, 6vw, 80px) clamp(20px, 6vw, 80px) clamp(50px, 8vw, 100px)" }}>
         {/* Label */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
